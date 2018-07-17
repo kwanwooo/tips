@@ -1,0 +1,73 @@
+﻿Falgun/
+  ├── css/
+  │   ├── ie/
+  │   ├── images/
+  │
+  ├── files/
+  │   ├── css/
+  │   ├── font/
+  │   ├── ico/
+  │   ├── images/
+  │   ├── js/
+  │
+  ├── font/
+  │   ├── glyphicons-halflings.png
+  │   └── glyphicons-halflings-white.png
+  │
+  ├── ico/
+  │
+  ├── images/
+  │    ├── flag-icons
+  │    └── tbl-img
+  │
+  ├── js/
+  │    ├── inputs-ext
+  │    │       ├── address
+  │    │       └── wysihtml5
+  │    │                └── bootstrap-wysihtml5-0.0.2
+  │    │       
+  │    │
+  │    └── tiny_mce
+  │             ├── langs
+  │             ├── plugins
+  │             ├── themes
+  │             └── utils
+  │
+  ├── php/
+  │
+  └── tags/
+      ├── fake_json_endpoint.html
+      └── fake_plaintext_endpoint.html
+	typography.html提供了文字样式（字号、字体、文字颜色、粗细、前缀等）模版
+	text-editor.html提供了文字编辑模版
+	tables.html提供了最基本的表格
+	table-cloth.html提供了表格的各个样式
+	search-page.html提供了各式各样的查询列表
+	profile.html提供了用户概况的模版
+	pricing.html提供了价格牌模版
+	login1.html提供了另一种登录模版
+	login.html提供了登录模版
+	invoice.html提供了付款通知的摸版
+	grid.html提供了网格布局的模版
+	google-chart.html提供了谷歌图表
+	gallery.html提供了简单的相册（Gallery）模版
+	form-wizard.html提供了向导式表单（Form Wizard）、
+	form-validation.html提供了表单验证模版
+	form-elements.html提供了基本的表单、filedset、网格式表单、内联表单、登录表单以及带图标的表单模版
+	form-components.html提供了文件上传、下拉框、添加/删除标签、图片上传、颜色选择器、日期选择器、时间选择器以及组合元素的模版
+	flot-chart.html提供了各类图表（折线图、实时图、饼状图、柱状图、堆叠区域图）
+	file-manager.html提供了文件管理功能
+	data-tables.html提供了表格插件
+	components-widgets.html提供了各个小部件（比如：UI元素、导航栏、下拉列表、通知、二级导航栏（Breadcrumb）、进度条、折叠面板（Accordion）、通知（Notification）、颜色选择器（Color Picker）、选项卡（Tab Widgets）、标签和徽章（Label & Badges）、多媒体对象（Media）、html文件文本编辑器、内敛编辑（Inline Edit）、弹框（Alert/Modal））
+	chat.html提供了一个聊天模版
+	calendar.html提供了一个日历模版
+	buttons-icons.html提供了各式各样的按钮
+	css文件夹保存了bootstrap、JQuery和theme的css样式，以及images文件夹（包含各个类别的图标）
+	font文件夹保存字体
+	ico文件夹中保存各个像素的苹果图标
+	js文件夹中除了基本的bootstrap和jQuery外，还有input-ext文件夹和tiny_mce文件夹
+		前者包含了address文件夹（包含地址的三级联动js）和wysihtml5文件夹（包含了富文本编辑器）
+		后者包含了tiny_mce文件夹（轻量级的，基于浏览器所见即所得HTML编辑器）
+	
+	php文件夹中有简单的elfinder php后端代码
+	tags文件夹中是假的json数据，假的明文便于用户测试
