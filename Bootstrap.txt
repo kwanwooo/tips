@@ -14,7 +14,7 @@ bootstrap/
       └── glyphicons-halflings-white.png
 
 在bootstrap文件夹中包含了css、js、img文件夹
-	在css文件夹中提供了编译版的.css文件和编译并压缩过的.min.css文件
+	在css文件夹中提供了编译版的.css文件和编译并压缩过的.min.css文件，以及响应式的css文件
 	在js文件夹中同理
-	在img文件夹中，将图标用imageOptim工具压缩。
+	在img文件夹中，将图标用imageOptim工具压缩
 注：bootstrap依赖于JQuery库
