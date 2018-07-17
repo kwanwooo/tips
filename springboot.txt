@@ -1,0 +1,29 @@
+﻿11512-C8A4-1756-8687-62EA
+属性配置
+@Value
+@Component
+@ConfigurationProperties
+
+
+
+java -jar 方式打开
+用eclipse打开 
+可以在多个开发环境打开
+
+Controller 控制器，接收用户端的请求
+@Controller 处理http请求
+@RestController Spring4后新加，返回json需要@ResponseBody配合@Controller
+@RequestMapping 配置url映射，通过url访问到方法 get post (postman插件可以检测)
+@PathVariable 获取url中的数据
+@RequestParam 获取请求参数的值
+@GetMapping 组合注解
+
+Spring-Data-Jpa （JPA（Java Persistence API）定义了一系列对象持久化的标准，目前实现这一规范的产品有Hibernate、TopLink等）
+
+RESTful API设计 GET获取、POST创建、GET查询、PUT更新、DELETE删除
+
+web进阶
+	使用@Valid表单验证
+	使用AOP处理请求
+	统一异常处理
+	单元测试

@@ -1,0 +1,10 @@
+﻿Class类
+1）在面向对象的世界里，万事万物皆对象。除了静态变量和普通数据类型
+   类是对象，类是java.lang.Class类的实例对象。这个对象称为该类的类类型。
+   There is a class named Class
+2）动态加载类和静态加载类的区别
+new 创建对象是静态加载类，在编译时刻就需要加载所有可能使用的类
+通过动态加载类可以解决该问题
+3）通过接口解决newInstance()强制类型转换需要知道类名的缺陷（只需要知道接口名字）
+Class c =  Class.forName("类路径的全称");
+XXXable x = (XXXable) c.newInstance()

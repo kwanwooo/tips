@@ -1,0 +1,390 @@
+﻿Web应用程序
+
+软件开发领域三大方向：桌面应用程序、Web应用程序、嵌入式应用程序
+静态页面（HTML、CSS）
+动态页面（HTML、CSS、数据库技术、高级语言、主流的网页脚本技术（jsp））
+tomcat服务器的目录结构：
+/bin ：存放各种平台下启动和停止tomcat的命令文件，如startup.bat，shutdown.bat
+/conf：存放tomcat的各种配置文件
+/lib：存放tomcat服务器所需的各种jar文件
+/log：存放在tomcat的日志文件
+/temp：tomcat运行时用于存放临时文件
+/webapps：当发布web应用时，默认会将web应用的文件发布到此目录中
+/work：tomcat把由jsp生成的servlet放在此目录下
+
+WEB-INF目录结构
+--web.xml,项目部署文件。
+--classes 文件夹，用以放置 *.class文件。
+--lib文件夹。用于存放需要的 jar包。
+
+WEB-INF是java的web应用的安全目录。所谓安全就是客户端无法访问，只有服务端可以访问的目录。
+如何让hah.jsp成为欢迎界面？
+在web-inf文件夹中配置项目部署文件web.xml。
+添加标签
+<welcome-file-list>
+<welcome-file>/hah.jsp</welcome-file>
+<welcome-file-list>
+修改完web.xml,需要重启Tomcat。
+
+项目的虚拟路径:
+即Tomcat安装目录下webapps目录下的项目文件夹名称。默认情况下，项目的虚拟路径即为Web项目名称。
+myEclipse 2016版本，修改项目虚拟路径：
+项目名称 右键 --> Properties --> MyEclipse --> Project Facets --> Web，Web Context-root即可修改虚拟路径，之后可以需要重新发布启动Tomcat
+
+Jsp基础语法——Jsp简介
+ 一、简介
+1、JSP:Java Server Pages，其根本是一个简化的Servlet设计，它实现了在Java中使用HTML标签。
+2、Jsp是一种动态网页技术标准，也是JAVA EE标准
+3、Jsp与Servlet一样，是在服务器端执行的。
+
+Jsp基础语法——常见动态网站开发技术对比
+· JSP：基于java平台，跨平台,安全高,适于【大型】、【企业级】、【分布式】Web应用程序
+· Asp.net：.Net平台，简单易学，但安全性差，跨平台性差
+· Php：简单，高效，成本低，开发周期短，适合中小型企业web应用开发（开发黄金组合LAMP：Linux系统 + Apache服务器 + MySQL数据库 + PHP语言）
+
+Jsp基础语法——Jsp基础语法——指令
+Jsp页面元素构成：指令、表达式、小脚本、声明、注释、静态内容
+一、Jsp指令：
+1、page指令：通常位置jsp页面顶端，同一个页面可以有多个
+（1）语法格式：<%@ page 属性1="属性值" 属性2="属性值1,属性值2"...属性n="属性n"(键值对)%>
+（2）常用属性
+ · language    指定JSP页面使用的脚本语言              默认值为java
+ · import      通过该属性来引用脚本语言中使用的类文件 默认值为无
+ · contentType 用来指定JSP页面所采用的编码方式        默认值为text/html,ISO-885901
+如：<%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
+2、include指令：将外部文件嵌入当前文件，同时解析这个页面的JSP语句，是包含指令
+3、taglib指令：使用标签库定义新的自定义标签，在JSP页面中启用制定行为
+
+jsp 注释:
+ <!-- html注释 --> //客户端可见
+ <%-- jsp注释  --> //客户端不可见
+ jsp脚本中使用java注释 
+  //单行注释      //客户端不可见
+
+JSP脚本：在JSP页面中执行的java代码。语法：<%Java 代码%>
+
+JSP声明 
+1、指在JSP页面中中定义变量或者方法
+2、语法：<%! java代码 %>
+
+JSP
+<%! Java声明 %>
+<% Java语句 %>
+<%=java表达式 %>//表达式不能以；结束
+
+jsp生命周期
+1、JSP引擎先把该JSP文件转换成一个Java源文件（Servlet），在转换时如果发现JSP文件有任何语法错误，转换过程将中断，并向服务端和客户端输出出错信息。
+2、如果转换成功，JSP引擎用javac把该Java源文件编译成相应的class文件。
+3、创建一个该Servlet（JSP页面的转换结果）的实例，该Servlet的jspInit()方法被执行，jspInit()方法在Servlet的生命周期中只被执行一次。
+4、jspService()方法被调用来处理客户端的请求。对每一个请求，JSP引擎创建一个新的线程来处理该请求。如果有多个客户端同时请求该JSP文件，则JSP引擎会创建多个线程。每个客户端请求对应一个线程。以多线程方式执行可以大大降低对系统的资源需求，提高系统的并发量及响应时间。但不过也应该注意多线程的编程限制，由于该Servlet始终驻于内存，所以响应是非常快的。
+
+jsp九大内置对象：
+1.JspWriter out
+2.request 转发，地址不变，request和response
+3.response 重定向，地址改变，无request和response
+4.session 一次会话，重启服务器，关闭所有页面和调用invalied方法会结束此次session
+5.application 服务器重启
+后面不常用
+6.page Object子类，equals（）toString等方法
+7.pageContext 
+8.exception isPageError = true 处理异常
+
+Web程序的请求响应模式：
+用户/客户端发送请求（request）
+服务器给用户/客户端响应（response）
+
+缓冲区:Buffer 保存临时数据
+out是JspWriter 的实例,是向客户端输出内容的常用对象.
+常用方法:
+1.void println() 向客户端打印字符串.
+2.void clear() 清除缓冲区,在flush之后调用会抛出异常.
+3.void clearBuffer() 清除缓冲区,在flush之后调用不会抛出异常.
+4.void flush() 将缓冲区内容输出到客户端.
+5.int getBufferSize() 返回缓冲期字节数的大小
+6.int getRemaining() 返回缓冲区还剩多少可用
+7.boolean siAutoFlush()缓冲区满时是自动清空还是抛出异常
+8.void close() 关闭输出流
+9.config 设置servelet 初始化参数
+
+表单有两种提交方式：get与post。定义在<form action="dologin.jsp" name="loginForm" method="提交方式***"></form>   动作／名称等顺序无所谓。
+1.get：以【明文】方式，通过URL提交数据，数据在URL中【可以看到】。提交数据最多不超过【2KB】。安全性较低，但效率比post方式高。适合提交数据量不大，且安全要求不高的数据：比如：搜索、查询等功能。
+2.post：将用户提交的信息封装在HTML HEADER内。适合提交数据量大，安全性高的用户信息。如：注册、修改、上传等功能。
+
+request对象
+（1）内容：
+客户端的请求信息被封装在request对象中，通过它才能了解到客户的需求，然后做出响应。
+它是HttpServletRequest类的实例。request对象具有请求域,即完成客户端的请求之前,该对象一直有效。
+（2）方法：
+1 object getAttribute(String name) 返回指定属性的属性值
+2 Enumeration getAttributeNames() 返回所有可用属性名的枚举
+3 String getCharacterEncoding() 返回字符编码方式
+4 int getContentLength() 返回请求体的长度（以字节数）
+5 String getContentType() 得到请求体的MIME类型
+6 ServletInputStream getInputStream() 得到请求体中一行的二进制流
+7 String getParameter(String name) 返回name指定参数的参数值
+8 Enumeration getParameterNames() 返回可用参数名的枚举
+9 String[] getParameterValues(String name) 返回包含参数name的所有值的数组
+10 String getProtocol() 返回请求用的协议类型及版本号
+11 String getScheme() 返回请求用的计划名,如:http.https及ftp等
+12 String getServerName() 返回接受请求的服务器主机名
+13 int getServerPort() 返回服务器接受此请求所用的端口号
+14 BufferedReader getReader() 返回解码过了的请求体
+15 String getRemoteAddr() 返回发送此请求的客户端IP地址
+
+response对象
+	response对象包含了响应客户请求的有关信息，是HttpServletResponse类的实例。
+设置响应的MIMI类型
+response.setContentType("text/html;charset=utf-8")
+向客户端输出字符串对象，
+而且先于jspWriter，使用out.flush()来避免
+RrintWriter response.getWriter()
+请求重定向
+response.sendRedirect("index.jsp");
+
+
+请求转发与请求重定向的区别
+一、请求重定向：服务端responce.sendRedirect("xx.jsp")重定向。
+【客户端行为】：即客户端会访问两次，第一次访问后会立即跳转到第二个重定向页面上，
+【从本质上讲等于两次请求】，而前一次的请求封装的request对象不会保存，地址栏的URL地址会改变。
+二、请求转发：服务端request.getRequestDispatcher("xx.jsp").forward(request,response)请求转发。forward(request,response)用于保存内置对象request和response。
+【服务器行为】：服务器会代替客户端去访问转发页面，
+【从本质是一次请求】，转发后请求对象会保存，地址栏的URL地址不会改变。
+
+1、session表示客户端与服务器的一次会话
+2、Web中的session指：用户在浏览某个网站时，从进入网站到浏览器关闭所经过的这段时间，也就是用户浏览网站所花费的时间。
+3、在服务器的内存中保存着不同用户的session，一个用户对应一个session
+4、从上述定义中可以看到，session实际是一个【特定的时间概念】
+session对象
+（1）session是JSP的一个内置对象，是HttpSession类的实例。
+（2）从客户打开浏览器并连接到服务器开始，到客户关闭浏览器窗口断开与服务器的连接，这一过程成为一个会话。
+（3）当客户在同一个网站的不同页面之间进行切换并访问时，服务器是通过session来判断这些请求是否来自同一个客户。
+（4）session一般有时间限制，长时间不操作可能会导致session失效。session失效后原session中保存的属性值会全部丢失。
+（5）setMaxInactiveInterval(int i)  该方法可直接设定session的生存时间，超过该时间session会重新创建。（单位：秒）
+-------------------------------
+
+session对象的常用方法有：
+long getCreationTime() ： 返回session的创建时间；
+public String getId() ： 返回session的唯一ID号（该ID在session生成时，由JSP引擎创建）
+public Object setAttribute(String name,Object value) ： 按照键值对的方式在该session会话中保存一个属性（该属性是一个对象类型）
+public Object getAttribute(String name) ： 返回指定名称的属性的值（如果该名称的属性不存在，则返回null）
+String[] getValueNames() ： 返回一个（包含在此session中所有可用属性）的数组。
+int getMaxInactiveInterval() ： 返回一个时间，该时间表示当前session间隔多少时间之后会失效（单位：秒）。
+
+session的生命周期
+1.创建：当客户端第一次访问某个jsp或者servlet时候，服务器会为当前会话创建一个SessionId，每次客户端向服务器发送请求时，都会将此SessionId携带过去，服务端会对此SessionId进行校验
+2.活动：
+①某次会话当中通过超链接打开的新页面属于同一次会话
+②只要当前会话页面没有全部关闭，重新打开的浏览器窗口访问同一个项目资源时属于同一次会话
+③除非本次会话的所有页面都关闭后在重新访问某个JSP或者servlet将会创建新的会话
+注意：注意原有会话还存在，只是这个旧的Session仍然存在于服务端，只不过再也没有客户端会携带它然后交予服务端校验
+3.销毁：三种方式
+①调用了session.invalidate()方法
+②Session过期（超时）
+	超时设置有两种方式：
+	1、session.setMaxInactiveInterval（时间）//单位是秒
+	2、在web.xml下配置(所在项目web-INF中的web.xml配置)
+	<session-config>
+		<session-timeout>10</session-timeout> //单位是分钟
+	</session-config>
+③服务器重新启动
+
+application对象
+一、application介绍
+1、实现了用户间数据的共享，可存放全局变量。（类似静态对象）
+2、开始于服务器启动，终止于服务器的关闭（生命周期）
+3、在用户的前后连接或不同用户之间的连接中，可以对application对象的同一属性进行操作
+4、在任何地方对application对象属性进行操作，都将影响到其他用户对此的访问
+5、application对象是ServletContext类的实例
+
+常用方法：
+  1、public void setAttribute（String name，Object value）使用指定名称将对象绑定到此会话。
+  2、public Object getAttribute（String name）返回于此会话中指定名称绑定在一起的对象，如果没有对象绑定在该名称下，则返回null。
+  3、Enumeration getAttributeName（）返回所有可用属性名的枚举。
+  4、String getServerInfo（）返回jsp（servlet）引擎名及版本号。
+
+
+page对象
+  page对象就是指向当前jsp页面本身，有点像类中的this指针，它是Java.lang.object类的实例。常用方法如下：
+  1、class getClass（）返回此Object的类。
+  2、int hashCode（）返回Object的hash码。
+  3、Boolean equals（Object obj）判断此Object是否与指定的Object对象相等。
+  4、void copy（Object obj）把此Object拷贝到指定的Object对象中。
+  5、Object clone（）克隆此object对象。
+  6、String toString（）把Object对象转换成String类的对象。
+  7、void notify（）唤醒一个等待的线程。
+  8、void notifyAll（）唤醒所有等待的线程。
+  9、void wait（int timeout）使一个线程处于等待直到timeout结束或被唤醒。
+  10、void wait（）使一个线程处于等待直到被唤醒。
+
+pageContext
+（1）pageContext对象提供了对JSP页面中所有对象及名字空间的访问操作
+（2）pageContext对象可以访问本页面的session，可以访问本页面的application对象的任意属性值
+（3）pageContext对象是某个页面中所有功能的集大成者
+---------------------------------------
+pageContext对象的常用方法：
+（1）JspWriter getOut() 返回当前客户端相应被使用的JspWriter流（out）
+（2）HttpSession getSession() 返回当前页面中HttpSession对象（session）
+（3）Object getPage() 返回当前页面的Object对象（page）
+（4）ServletRequest getRequest() 返回当前面的ServletRequest对象（request）
+（5）servletResponse getResponse() 返回当前页的ServletResponse对象（response）
+（6）void setAttribute(Strign name, Object attribute) 设置属性及属性值
+（7）Object getAttribute(String name ,int scope) 在指定范围内取属性值
+（8）int getAttributeScope(String name) 返回某属性的作用范围
+（9）void forward(String relativeUrlPath) 使当前页面跳转到另外一个页面（服务器转发）
+（10）void include(String relativeUrlPath) 在当前位置包含另一个文件
+
+
+config对象
+是在一个Servlet初始化时，JSP引擎向它传递信息用的，包含：Servlet初始化时所要用到的参数（属性名和属性值）以及服务器的有关信息（通过传递一个ServletContext对象）
+ 常用方法： 
+ServletContext getServletContext()返回含有服务器相关信息的ServletContext对象
+String getInitParameter(String name)返回初始化参数的值
+Enumeration getInitParameterNames()返回Servlet初始化所需所有参数的枚举
+
+Exception
+（1）Exception是java.lang.Throwable类的实例
+（2）当一个页面运行发生了异常，就产生了该Exception对象。
+（3）若一个JSP页面要使用该Exception对象，需要将isErrorPage的值设为true
+--------------------------------------
+Exception对象常用方法：
+（1）String getMessage() 返回描述异常的信息
+（2）String toString() 返回关于异常的简短描述信息
+（3）void printStackTrace() 显示异常及其栈轨迹
+（4）Throwable FillInStackTrace() 重写异常的执行栈轨迹
+
+一、什么是javabean
+ 1、Javabeans就是符合某种特定规范Java类。
+使用Javabeans的好处是【解决代码的重复编写】，
+减少代码冗余，功能区分明确，提高代码的维护性。
+2、设计原则四点：
+公有类，属性私有，包含无参的共有构造方法，getter和setter方法封装属性
+
+（1）JSP动作元素（action element）
+JSP动作元素为请求处理阶段提供信息。动作元素遵循XML语法，有一个包含元素名的开始标签，可以有属性，可选的内容、与开始标签匹配的结束标签。
+（2）JSP动作元素种类
+第一类是与存取JavaBean有关，包括：
+<jsp:useBean> <jsp:setProperty> <jsp:getProperty>
+第二类是JSP1.2开始有的基本元素，包括：
+<jsp:include> <jsp:forward> <jsp:param> <jsp:plugin> <jsp:params> <jsp:fallback>
+第三类是JSP2.0新增的动作元素，主要与JSP Document有关，包括：
+<jsp:root> <jsp:declaration> <jsp:scriptlet> <jsp:expression> <jsp:text> <jsp:output>
+第四类是JSP2.0新增的动作元素，主要是用来动态生成XML元素标签的值，包括：
+<jsp:attribute> <jsp:body> <jsp:element>
+第五类是JSP2.0新增的动作元素，主要是用在Tag File中，包括：
+<jsp:invoke> <jsp:dobody>
+
+在JSP中使用JavaBean有两种方法：
+1。在src下按照规则新建一个JavaBean类，然后再WebRoot下对应的jsp文件中，在声明里新建一个JavaBean类，然后赋值、使用。
+2.或是使用JSp的动作标签，如<jsp:useBean id="标识符(类似于Java中的变量名)" class="java类名(需要将包名一同写入)" scope="作用范围(默认是page)">
+
+<jsp:useBeans>动作：在jsp页面中实例化或者在指定范围内使用javabean
+1、<jsp:useBean id="标示符" class="java类名" scope="作用范围" /> 
+2、【其中标示符为对象引用；java类名需要使用全名】
+<jsp:setProperty>动作：给【已经实例化的Javabean对象的属性赋值】，一共有四种形式。
+1、需要表单提交属性：<jsp:setProperty name="Javabean实例名" property="*"/>： 与之前页面提交的表单的【所有属性进行匹配】，若有与javabean类属性名相同的，则进行赋值。比如表坛提交了username="xxx"，而javabean里有username属性，则对其进行赋值
+2、需要表单提交属性<jsp:setPropery name="Javabean实例名" property="javabean属性名" />：对【指定的属性进行匹配】
+3、手动设置属性：<jsp:setProperty name = "Javabean实例名" property="Javabean属性名" value="BeanValue" />
+4、与request参数有关,通过url传参 ：<jsp:setProperty name="Javabean实例名" property="propertyName" param="request对象中的参数名" />
+例
+1.根据表单自动匹配所有的属性
+<jsp:setProperty name="myUsers" property="*"/>
+2.根据表单自动匹配相应的属性（部分匹配）
+<jsp:setProperty name="myUsers" property="username"/>
+3.与表单无关，通过手工赋值给属性
+<jsp:setProperty name="myUsers" property="username" value=“Lisa”/>
+4.通过url传参数给属性赋值
+<jsp:setProperty name="myUsers" property="username"/>
+<jsp:setProperty name="myUsers" property="password" param=“mypass”/>
+
+getProperty
+
+作用：获取指定javabean对象的属性值。
+
+〈jsp:getProperty name="javabean实例名" property="javabean属性名"〉
+
+avaBean的生命周期存在于4种范围之中，分别为page、request、session、application，它们通过<jsp:useBean>标签的scope属性进行设置。这4种范围虽然存在很大的区别，但它们与JSP页面中的page、request、session、application范围相对应。
+
+page范围：与当前页面相对应，JavaBean的生命周期存在于一个页面之中，当页面关闭时JavaBean被销毁。
+
+request范围：与JSP的request生命周期相对应，JavaBean的生命周期存在于request对象之中，当request对象销毁时JavaBean也被销毁。
+
+session范围：与JSP的session生命周期相对应，JavaBean的生命周期存在于session会话之中，当session超时或会话结束时JavaBean被销毁。
+
+application范围：与JSP的application生命周期相对应，在各个用户与服务器之间共享，只有当服务器关闭时JavaBean才被销毁。
+
+这4种作用范围与JavaBean的生命周期是息息相关的，当JavaBean被创建后，通过<jsp:setProperty>标签与<jsp:getProperty>标签调用时，将会按照page、request、session和application的顺序来查找这个JavaBean实例，直至找到一个实例对象为止，如果在这4个范围内都找不到JavaBean实例，则抛出异常。
+
+一、http协议的无状态性
+1、无状态是指，当浏览器发送请求给服务器的时候，服务器会响应。但当同一个浏览器再次发送请求时，服务器不会知道是刚才那个浏览器。
+2、简单说，服务器【不会保存用户状态】，不会记得客户端是否访问过，所以这就是无状态协议
+
+1.jsp状态管理
+ 保存用户状态的两大机制
+ 1、Session
+ 2、Cookie
+  什么是cookie？
+  cookie：是web服务器保存在客户端的一系列文本信息。
+典型应用一：判断注册用户是否已经登录网站。
+典型应用二：保存用户浏览记录。
+ cookie的作用：
+   1、对特定对象的追踪。
+   2、保存用户网页浏览记录与习惯。
+   3、简化登录
+安全风险：容易泄露用户信息
+
+jsp中创建与使用Cookie：
+1、创建Cookie对象：
+Cookie cookie=new Cookie(String key,Object value);
+2、写入Cookie：
+response.addCookie(cookie);
+3、读取Cookie：
+Cookie[] cookies=request.getCookies();
+常用方法：
+1. setMaxAge( expiry ) 设置cookie的有效期，以秒为单位 getMaxAge() 获取cookie的有效时间，以秒为单位
+2. setValue(String value) 在cookie创建后，对cookie进行赋值 getValue() 获取cookie的值
+3. getName() 获取cookie的名称
+4.setValue()和getValue()涉及的都是字符串，对应前面提到的 Cookie是web服务器保存在客户端的文本文件。
+
+1、保存位置：session在服务器端内存，cookie在客户端文本
+2、保存对象：session保存Object类（保存对象大小没有限制），cookie保存String类型（保存对象大小有限制）
+3、生存权：session会话结束即销毁，cookie可以长期保存在客户端
+4、重要性：session安全性更高，保存重要信息，cookie保存不重要的信息
+
+常用的有page、include、taglib指令这三种指令；
+page：位于页面顶端，一个页面可以包含多个page指令
+include：将一个外部文件嵌入jsp中，同时解析这个页面中的jsp语句。
+taglib：使用标签库，自定义新的标签，在jsp中启动定制行为。
+
+include指令 
+1.语法 <% include file="地址"%>。
+案例：显示当前时间的页面。（1）写一个只输出时间的方法的date.jsp。（2）用于显示的页面,包含<% include file="date.jsp"%>
+
+include指令：
+include指令是编译阶段的指令，即include所包含的文件的内容是编译的时候插入到JSP文件中‘因此如果只修改了include文件内容，而没有对JSP修改，得到的结构将不会改变，所以直接执行已经存在的字节码文件，而没有重新编译。因此对不经常变化的内容，用include指令是合适的，如果需要的内容是经常变化的，则需要动作元素<jsp:include>.
+include指令的主要优点是功能强大，所包含的代码可以含有总体上影响主页面的JSP构造，比如属性、方法的定义和文档类型的设定。它的缺点是难于维护只要被包含的页面发生更改，就得更改主页面，这是因为主页面不会自动地查看被包含的页面是否发生更改。
+仅当include动作不能满足要求时，我们才应该使用include指令。
+include动作在维护上的优势十分巨大，当两种方法都可以使用时，include动作几乎肯定是首选的方法。
+对于文件包含，应该尽可能地使用include动作。仅在所包含的文件中定义了主页面要用到的字段或方法，或所包含的文件设置了主页面的响应报头时，才应该使用include指令。
+
+因为include指令更为强大。include指令允许所包含的文件中含有影响主页面的Jsp代码，比如响应报头的设置和字段、方法的定义。
+
+
+forward动作
+1、语法：<jsp:forward page="URL"/>
+2、等于服务器内部转发指令 request.getRequestDispacher("URL").forward(req,res);
+
+四种跳转.
+<% response.sendRedirect("login_seccess.jsp"); %>//告诉浏览器此路不通,你再问问另一页面能解决你的问题不?
+<jsp:forward page="login_fail.jsp"/> //服务器将请求转发到另一页面,浏览器不知情.
+<% pageContext.forward("login_fail.jsp");%> //服务器将请求转发到另一页面,浏览器不知情.
+<% request.getRequestDispatcher("login_fail.jsp").forward(request,response);%> //服务器将请求转发到另一页面,浏览器不知情.
+
+ param动作，传递方法为post
+1、语法：<jsp:param name="参数名" value="参数值">
+2、【常常与<jsp:forward></jsp:forward>一起使用】，并作为其【子标签】。
+3、用于传递新参数或者【修改原有参数值】，修改参数时使用form表单里的参数名称即可。同样用request.getParameter("参数名")获取
+
+必须与forward、include及plugin动作配合使用。通常与forward动作一起使用，作为它的子标签，它的作用是指定某个参数值，可以用于传递参数，
+<jsp:forward page="url"> 
+<jsp:param value="123@qq.com" name="email"/> 
+</jsp:forward>

@@ -1,0 +1,32 @@
+﻿JSP的前身是Servlet
+   Tomocat容器等级
+   Tomocat容器分为四个等级，Servlet的容器管理Context容器，一个Context对应一个Web工程。
+   tomcat容器等级：tomcat->Container容器->Engine容器(引擎容器)->Host(主机)容器->Servlet->Context。
+手写一个Servlet：1、继承HttpServlet2、重写doGet()或者doPost()方法3、在web.xml中注册Servlet
+使用MyEclipse编写第一个Servlet：1、src->new->Servlet2、重写doGet()或者doPost()3、部署运行
+JSP内置对象和Servlet对比
+1.out -----> response.getwriter()
+
+2.request -----> service(request)
+
+3.response -----> service(response)
+
+4.session ------>  request.getsession(）
+
+5.application ------> getServletContext()
+
+6.exception ----->  Throwable
+
+7.Page -----> this
+
+8.PageContext -----> PageContext
+
+9.Config -----> getServletConfig
+
+Servlet高级
+1、获取初始化参数
+2、MVC设计模式
+3、Model2简介
+model1=jsp+javabean
+model2=javabean(M)+jsp(v)+servlet(c)
+4、阶段项目

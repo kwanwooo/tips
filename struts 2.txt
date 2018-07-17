@@ -1,0 +1,77 @@
+﻿Struts 是流行和成熟的基于MVC设计模式的Web应用程序框架
+目的：减少运用MVC设计模式来开发Web应用的时间
+MVC模式：
+	JSP 代码臃肿
+	JSP + JavaBean = Model1 代码可维护性差
+	JSP + Servlet + JavaBean = Model2 
+	MVC 控制器 模型 视图
+Struts2流程
+1、客户端（HttpServletRequest）发送请求 
+
+2、请求经过过滤器(ActionContextCleanUp-->StrutsPrepareAndExecuteFilter(核心过滤器 ) 
+
+3、请求到达ActionMapper，通过它来决定调用哪个Action 
+
+4、当决定调用某个Action后，请求又会通过核心过滤器，核心过滤器把请求的处理交给ActionProxy
+
+5、ActionProxy通过ConfigurationManager询问配置文件（Struts.xml），找到要调用的Action类。
+
+6、之后ActionProxy创建一个ActionInvocation的反向实例 
+
+7、经过拦截器(interceptor)， 通过ActionInvocation的实例调用真正的Action
+
+8、Action执行完毕，ActionInvocation创建Result并返回
+
+9、Result经过JSP、拦截器之后，通过HttpServletResponse返回到客户端
+	
+ 拦截器：
+Struts2大多数核心功能是通过拦截器实现的，每个拦截器完成某项功能。
+拦截器方法在Action执行之前或者之后执行。
+
+拦截器栈：
+从结构上看，拦截器栈相当于多个拦截器的组合。
+在功能上看，拦截器栈也是拦截器。
+
+拦截器的执行过程是一个递归的过程，工作原理类似于过滤器。
+
+自定义拦截器：
+1.方法一：实现Interceptor接口
+-void init():初始化拦截器所需资源
+-void destroy() :释放在init（）中分配的资源
+-String intercept(ActionInvocation ai)throws Exception 实现拦截器功能，利用ActionInvocation参数获取Action状态，返回result字符串作为逻辑视图。
+2.方式二：继承AbstractInterceptor类
+-提供了init()和destroy() 方法的空实现
+-只需要实现intercept方法即可
+
+实际开发当中一般会去继承AbstractInterceptor这个父类
+
+-创建拦截器
+-在配置文件中定义拦截器并引用它
+
+新建拦截器的步骤：
+1. 建立一个拦截器类继承自AbstractInterceptor类，并实现intercept方法 
+invocation.invoke()方法调用下一个拦截器，如果已经是最后一个拦截器，则执行目标action
+2. 在strut的配置文件的package中注册拦截器，注册拦截器在action调用之前，在响应的action配置中，通过interceptor-ref标签来引用拦截器
+e.g.
+2.1配置拦截器
+       <interceptors>
+          <interceptor name="timeinterceptor" class="com.imooc.interceptor.TimerInterceptor"></interceptor>
+       </interceptors>
+
+2.2引用拦截器
+<interceptor-ref name="timeinterceptor"></interceptor-ref>
+
+Struts2内置常用的拦截器：
+1.params拦截器：
+-负责将请求参数设置为Action属性
+2.staticParams拦截器：
+-将配置文件中action元素的子元素param参数设置为Action属性
+3.servletConfig拦截器：
+-将源于Servlet API的各种对象注入到Action，必须实现对应接口
+4.fileUpload拦截器：
+-对文件上传提供支持，将文件和元素设置到对应的Action属性，实际上内部依然使用了Commons-FileUpload组件。
+5.exception拦截器：
+-捕获异常，并且将异常映射到用户自定义的错误页面
+6.validation拦截器：
+-调用验证框架进行数据验证
+更多的拦截器可在struts核心包的struts-default.xml中查看

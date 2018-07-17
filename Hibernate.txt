@@ -1,0 +1,249 @@
+﻿1、ORM:(Object/Relationship Mapping)--对象/关系映射
+
+2、写SQL语句的缺点：
+a.不同的数据库使用的SQL语法不同。比如:PL/SQL(oracle数据库)与T/SQL(微软版本)
+b.同样的功能在不同的数据库中有不同的实现方式。比如分页SQL
+c.程序过分依赖SQL对程序的一直及扩展,维护等带来很大的麻烦。
+3、Hibernate是一种能够减少对SQL语句依赖，可行的ORM框架技术。
+
+1）Hibernate简介
+Hibernate是java领域的一款开源的ORM框架技术
+Hibernate对JDBC进行了非常轻量级的对象封装
+
+2）Hibernate在我们的应用程序中充当着什么样的角色呢？
+举例，如下图所示：我们要开发不同的系统
+持久化层 --- 处于业务逻辑层和数据库之间的一个角色
+作用 -- 把程序中生成的对象持久化到数据库中，换句话说，就是把这些对象通过对象关系映射保存到数据库的表中<br>
+
+3）其他主流的ORM框架技术
+①MyBtis : 前身就是著名的iBatis
+②Toplink:后被Oracle收购，并重新包装为Oracle AS TopLink
+③EJB:本身是JAVAEE的规范
+
+hibernate配置文档:
+    	<property name="connection.username">用户名</property>
+    	<property name="connection.password">密码</property>
+    	<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    	<!-- <property name="connection.url">jdbc:mysql://localhost:3306/stu</property> -->
+    	<property name="connection.url">jdbc:mysql:///stu?useUnicode=true&amp;characterEncoding=UTF-8</property>
+    	<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+    	<property name="show_sql">true</property>
+    	<property name="format_sql">true</property>
+    	<property name="hbm2ddl.auto">create</property>
+
+编写持久化类(实体类)，持久化类的设计原则要遵循javabean的设计原则
+设计原则有四点：
+1. 这个类是一个公有类
+2. 提供公有的不带参数的默认的构造方法
+3. 属性要私有化private
+4. 属性要用setter/getter封装
+
+创建完数据持久类(实体类)后需要新建对象关系映射文件：
+新建对象关系映射文件Student.hbm.xml
+New -> other - > Hibernate -> Hibernate XML Mapping file (hbm.xml) 选择需要映射的刚创建的实体类，会将创建的字段和数据库字段进行映射。
+创建完对象关系映射文件后
+ 需要在cfg.xml中配置文件声明：如<mapping resource="Student.hbm.xml" ></mapping>
+配置后将在初始化 Hibernate 环境时将装载User.xml 映射信息。
+
+使用 junit 测试：
+  @Test 测试注释标签
+  @Before 初始化方法
+  @After  释放资源
+
+测试框架
+
+@Before
+public void init(){
+
+}
+@After
+public void destroy(){
+
+}
+@Test
+public void testSaveStudents(){
+
+}
+执行顺序  @Before --> @Test --> @After
+
+/**新版本方法
+* 在eclipse中可以查看数据库的，具体步骤：Winows->Show view->other->Data soure Explorer即可。
+* 一定要导数据库的jar包。数据库浏览器（Data soure Explorer）的jar包和项目的
+* jar包并不能通用，需分别倒入。
+* 使用数据库逆向生成实体类的小伙伴，一定要在数据库中设置主键，要不就等着报错吧！！！！！！！
+*/
+public class StudentTest {
+private SessionFactory sessionfactory;
+private Session session;
+private Transaction transaction;
+@Before
+public void init() {
+Configuration configuration = new Configuration().configure();
+/*注意，并不调用ServiceRegistry方法，而且在新版本中调用该方法有几率会出现一定的错误.
+老师讲的课是由实体类直接生成的hbm.xml文件，会在hibernate.cfg.xml中的<session-factory>中生成一个
+name属性，即<session-factory name="">,把name属性删除,否则会报错
+*/	
+sessionfactory = configuration.buildSessionFactory();
+session = sessionfactory.openSession();
+transaction = session.beginTransaction();
+}
+@Test
+public void studentTest() {
+Student student=new Student(1,"zhanhgsa","man",new Date());
+session.save(student);	
+}
+
+@After
+public void destory() {
+transaction.commit();
+session.close();
+sessionfactory.close();
+}
+}
+
+hibernate.cfg.xml配置文档的常用配置.
+
+程序在运行的时候会读取hibernate.cfg.xml配置文档,从而实现连接数据库,并且生成表结构.
+
+设置了<property name="show_sql">true</property>,
+与<property name="format_sql">true</property>,
+则会把hibernate运行时对数据库的操作时的sql语句会显示在控制台并且格式化.
+
+<property name="hbm2ddl.auto">create</property>,即重新删除表结构再创建.所以之前的记录消失.
+
+<property name="hbm2ddl.auto">update</property>,
+它不会删除表结构也不会创建新的表结构,会保留原有的数据,只是更新.
+没有"hbm2ddl.auto"属性一样也是可以添加新的数据,会保留原有的数据.
+
+<property name="hibernate.default_schema">hibernate</property>,
+则在控制台输出的sql语句中,会在表名之前加上数据库名.
+hibernate的执行流程
+1.配置对象Configuration，作用：
+读取配置文档：Hibernate.cfg.xml；
+创建SessionFactory对象
+2.SessionFactory，作用：
+读取相应的里面加载的对象关系映射文件
+创建session文件
+3.session，作用：
+类似于JDBC中的Connection,这个session对象等同于连接对象
+执行增删改查：
+save，delete，update，get。
+4.执行某个session对象的方法的时候，必须开启一个事物transaction，这些方法需要封装在事物当中。
+5.执行完成方法之后，需要提交事务并且关闭session
+tx.commit()
+session.close()
+
+openSession 每次使用都是打开一个新的session，使用完需要调用close方法关闭session；
+getCurrentSession 是获取当前session对象，连续使用多次时，得到的session都是同一个对象，这就是与openSession的区别之一 ；
+一般在实际开发中，往往使用getCurrentSession多，因为一般是处理同一个事务，所以在一般情况下比较少使用openSession；
+
+如何获得session对象？？？
+（1）openSessionion
+（2）getCurrentSession
+如果使用getCurrentSession需要在hibernate.cfg.xml文件中进行配置：
+如果是本地事务（jdbc事务）
+<property name="hibernate.current_session_context_class">thread</property>
+如果是全局事务（jta事务）
+<property name="hibernate.current_session_context_class">jta</property>
+
+openSession与getCurrentSession的区别：
+（1）getCurrentSession在事务提交或者回滚之后会自动关闭，而openSesssion需要你手动关闭。如果使用openSession而没有手动关闭，多次之后会导致连接池溢出！
+（2）openSession每次创建新的session对象，getCurrentSession使用现有的session对象
+
+openSession与getCurrentSession
+openSession 每次使用都是打开一个新的session，使用完需要调用close方法关闭session；
+getCurrentSession 是获取当前session对象，连续使用多次时，得到的session都是同一个对象，这就是与openSession的区别之一 ；
+一般在实际开发中，往往使用getCurrentSession多，因为一般是处理同一个事务，所以在一般情况下比较少使用openSession；
+
+@hbm.xml常用配置	<br>
+<hibernate-mapping<br>
+schema="schemaName" //模式的名字<br>
+catalog="catalogName" //目录的名称<br>
+default-cascade="cassade_style" //级联风格 @<br>
+default-access="field/property/CalssName" //访问策略 @<br>
+default-lazy="true/false" //加载策略 @<br>
+package="packagename" //默认包名<br>
+></hibernate><br>
+<class<br>
+name="ClassName" //对应映射的类<br>
+table="tableName" //对应映射数据库的表<br>
+batch-size="N" //抓取策略，一次抓取多少记录<br>
+where="condition" //条件 eg:抓取条件<br>
+entity-name="EntiyName" //如果需要映射多张表<br>
+></class><br>
+<id //表的主键<br>
+name="propertyName" //对应的属性<br>
+type="typeName" //对应类型<br>
+column="column_nam" //映射数据库中表当中字段名的名称<br>
+length="length" //指定长度<br>
+<generator class="generatorClass"></id> //主键生成策略 @<br>
+/><br>
+<br>
+1、代理主键：是指与业务无关且能唯一标识数据库中记录,一般是数据库自动生成的,比如mysql可以使用auto_increment,Sql2000可以使用identity生成方式,oracle可以使用sequence生成方式。<br>
+2、自然主键：指业务相关,由用户指定,且能唯一标识数据库中的任意一条记录。
+
+1.clob和text对应大文本文件，blob对应大的二进制文件，例如视频音频图片
+2.java中的clob对应存储大文本文件，java中的blob对应存储大二进制文件
+MySQL不支持标准SQL的CLOB类型，在Mysql中，用TEXT，MEDIUMTEXT及LONGTEXT类型来表示长度超过255的长文本数据
+
+获取照片文件的写法
+File f=new File("照片的地址"+File.separator+"照片名字");
+InputStream input =new FileInputStream(f);
+Blob image=Hibrbate.getLobCreator(session).createBlob(input,input.available());
+s.setpPicture(image);
+session.save(s);
+
+组件属性：实体类中的某个属性属于用户自定义类的对象；
+作用：将两个实体类合并在一起组建成一个表
+在hbm.xml文件中配置：
+格式：
+<component name="取的名字" class="类名">
+<property name="类中属性" column="对应生成数据库中列属性名">
+</component>
+
+查询
+get与load区别：
+1.get调用后立即发出sql语句，并返回对象。load调用后返回代理对象，保存了实体对象id，直到使用了对象的非主键属性时才发出sql语句
+2.当查询到数据为空时，get返回null，load返回objectNotFound异常
+
+1.	Hibernate注解简介
+-使用注解的目的：为了简化繁琐的ORM映射文件(*.hbm)的配置
+2.	JPA与Hibernate的关系
+-JPA，全称Java Persistence API，JPA注解是JAVAEE的标准和规范
+-JPA和Hibernate的关系：JPA是标准接口，Hibernate是实现，但是其功能是JPA的超集
+-Hibernate通过hibernate-annotation、hibernate-entitymanager和hibernate-core三个组件来实现JPA
+-一般在实际开发中，优先考虑使用JPA注解，这样更有利于程序的移植和扩展
+3.	Hibernate注解分类
+-类级别注解
+-属性级别注解
+-映射关系注解
+4.@Entity--实体类注解
+5.@Table--表注解
+6.@Embeddable--嵌入类注解
+7.schema和catalog
+
+@entity注解是hibernate框架中的类级别注解之一,@entity注解常常用于放在实体类类头前。
+该注解还可以搭配应用的属性有：
+name - 表示该表主键生成策略名称，它被引用在@GeneratedValue中设置的“gernerator”值中。
+sequenceName - 表示生成策略用到的数据库序列名称。
+initialValue - 表示主键初始值，默认为0.
+allocationSize - 每次主键值增加的大小，例如设置成1，则表示每次创建新记录后自动加1，默认为50
+
+
+其中被@entity注解的实体类的属性和方法的属性级别注解分别有：
+@Id     映射生成主键（一个实体只能有一个属性被映射为主键，一般放在该主键的get()方法前面）
+@Version    定义乐观锁
+@Column     映射表的列（存在多表关联时，该注解可映射对应的关联关系，即外键）
+@Transient     定义暂态属性
+
+
+如果要使用hibernate框架和它的@entity注解进行自动创建以实体类为标准的数据表结构。
+基本实现创建对应实体类的数据表结果的步骤是：
+1.创建实体类，在类的前头添加上@Entity注解，然后定义实体类的属性、有参和无参的构造方法以及属性的get（）、set（）方法，其中在设定的主键的get方法前头加上 @Id 注解。
+
+2.配置hibernate的配置文件，即hibernate.cfg.xml文件的配置。
+<sessionfactory>
+A.与数据库相关连的数据库配置；
+B.与开发关联的常用参数；与会话关联的配置；
+C.需要创建数据表的URL路径（包名+类名）
+</sessionfactory>

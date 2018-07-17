@@ -1,0 +1,187 @@
+﻿spring 的核心：1. aop （面向切面编程），即不通过修改源代码来扩展和增强功能
+                             2. ioc（控制反转），即通过spring配置来创建类的对象，而不是new一个对象
+
+spring为javaEE三层结构的每一层都提供了不同的技术支持：
+      web层：springMVC
+      service层：spring 的 ioc
+      dao层：spring 的  jdbcTemplate
+
+
+ioc底层原理
+1.xml
+2.dom4j解析xml
+3.反射
+4.工厂设计模式
+
+
+AOP概述
+
+AOP，全称 Aspect-Oriented Programming，中文为面向切面编程。浅显的说就是我们要拓展一个类的功能，我们不是通过修改源代码，而是通过创建配置文件来实现。AOP是面向对象编程的一个拓展和增强，而不是一个独立的编程思想。
+
+总论为：采取横向抽取机制，取代了传统的纵向继承机制
+
+
+AOP原理
+
+原始的机制
+
+比如说我们新建一个这样的类
+
+
+public class User {
+    public void addToDB()
+    {
+        db.addEntry(userInstance);
+    }
+}
+public class User {
+    public void addToDB()
+    {
+        db.addEntry(userInstance);
+    }
+}
+这里面有一个方法，addToDB，功能是把一条数据添加到数据库中。但是现在我们想新增一个功能，就是添加了一个用户后，同时记录下这个添加操作到日志中。传统的做法是，修改addToDB这个方法， 在后面增加用于添加日志的相关代码，如archive.addEntry(record)，这就是传统的机制。
+
+我们每次做修改，都要修改原来的类，这不是一个很好的方法。于是有了后来的纵向继承机制。
+
+纵向继承机制
+
+比如说我们要添加日志车个功能，但是我们有不希望修改太多的源代码，那我们可以新建一个这样的类
+
+
+public class UserArchive{
+    public void addArchive() {
+        archive.addEntry(archiveInstance);
+    }
+}
+public class UserArchive{
+    public void addArchive() {
+        archive.addEntry(archiveInstance);
+    }
+}
+然后我们在原来的类中extends UserArchive（继承），用super.addArchive()调用父类的方法。这就是纵向继承机制。
+
+但这并不完美。假如我们把addArchive的函数名改掉，那么我们还是需要去改User的源代码。概括来讲，父类函数名发生变化，子类也需要变化。
+
+横向抽取机制
+
+横向抽取机制是用动态代理来实现的。让我们来具体看一下。
+
+比如说，我们有一个接口类和接口实现类
+
+
+public interface User {
+    public void add();
+}
+public interface User {
+    public void add();
+}
+
+public class UserImpl implements User {
+    public bpod add() {
+        db.addEntry(userInstance);
+    }
+}
+public class UserImpl implements User {
+    public bpod add() {
+        db.addEntry(userInstance);
+    }
+}
+这里的add只有一个功能，就是把一条user的数据插入到数据库中。但是我们想添加一个功能，把这个插入数据库的行为记录到日志中。如何用横向抽取机制来实现呢？
+
+在Spring的底层，会创建一个对象，这个对象并不是一个真正的对象，而是和UserImpl是平级的，拥有和我们原始UserImpl相同的功能的代理对象。然后，我们在这个代理对象中添加插入日志的逻辑，这就是横向抽取机制。这么做的最大好处就是，不需要碰原始代码就可以实现功能增强。
+
+如果这里没有接口，只有一个单纯的类，那么Spring底层就会创建一个子类的代理对象，然后在子类里面调用父类的方法，添加新的逻辑，完成增强。
+
+AOP相关术语
+
+别来回读概念了，咱们读不懂的，咱们来看看这到底是什么。
+
+比如说我们有一个User类，里面包含了增删改查四种方法。
+
+
+public class User {
+    public void add() {
+        db.addEntry(userEntry);
+    }
+    public void delete() {
+        db.deleteEntry(userEntry.getId());
+    }
+    public void update() {
+        db.updateEntry(userEntry.getId(), newUserEntry);
+    }
+    public UserEntry query() {
+        return query(UserEntry.class, id);
+    }
+}
+
+public class User {
+    public void add() {
+        db.addEntry(userEntry);
+    }
+    public void delete() {
+        db.deleteEntry(userEntry.getId());
+    }
+    public void update() {
+        db.updateEntry(userEntry.getId(), newUserEntry);
+    }
+    public UserEntry query() {
+        return query(UserEntry.class, id);
+    }
+}
+AOP就是不改源代码，来拓展这些函数的功能
+
+JointPoint 连接点
+
+类里面的哪些方法可以被增强，而这些方法就成为连接点。我们这个类中的四个方法全部都可以被增强，这四个方法都是连接点。
+
+CutPorint 切入点（重点）
+
+概念：我们要对哪些JointPoint（连接点）进行拦截的定义。
+
+具体来说，在我们的类里面，可以有很多方法可以被增强。在这个例子中，我们有四个方法可以增强。但是我们现在只需要增强其中两个，delete和update。那么delete和update就是切入点。概括来讲就是，这些实际上我们需要增强的方法就叫切入点。
+
+Advice 通知/增强
+
+概念：所谓通知是指拦截到JointPoint之后所要做的事情。
+
+实际增强的逻辑，就称之为通知/增强，或者通知。比如说，我们在想给add方法做一个增强：增加日志的功能。而这个日志功能的逻辑，就是通知/增强。而这种通知/增强，有几种类型：
+
+前置通知：我现在想要增强add方法，在add方法之前来增强就叫前置通知。
+后置通知：我现在想要增强add方法，在add方法之后来增强就叫前置通知。
+异常通知：方法中出现异常会有的通知。
+最终通知：后置之后来执行的增强就叫做最终通知。
+环绕通知（切面要完成的功能）：比如我们现在想要计算方法执行的时长。在方法执行之前我们取当前时间，在方法执行完毕之后我们再取当前时间。两个时间相减就是方法执行的时长。类似于这种功能就叫做环绕通知。概念就是，在方法之前和之后都执行的功能就叫环绕通知。
+Aspect 切面（重点）
+
+概念：是指切入点和通知（引介）的结合。
+
+把增强应用到具体的方法上面，这个过程，称之为切面。比如，我们要在add方法里面添加一个日志功能，而这个添加功能的过程，称之为切面。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+imooc spring
+
+
+
+spring是一个轻量级的控制反转(IoC)和面向切面(AOP)的容器框架
+——轻量：大小、开销轻量
+——通过IoC达到松耦合
+——提供了面向切面编程的丰富支持，允许通过分离应用的业务逻辑与系统级服务进行内聚性的开发
+——包含并管理应用对象的配置和生命周期，是一种容器
+——将简单的组件配置、组合成为复杂的应用，是框架
+

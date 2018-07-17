@@ -1,0 +1,122 @@
+﻿maven结构	
+
+src
+	main
+		java
+	test
+		java
+pom.xml
+
+
+mvn	-v	查看版本
+	compile	编译
+	test	测试
+	package	打包
+	clean	删除target
+	install	安装jar包到本地仓库
+	archetype:generate	按提示选择
+	archetype:generate
+
+		-DgroupId=组织名，公司网址的反写+项目名
+
+		-DartifactId=项目名-模块名
+
+		-Dversion=版本号
+
+		-Dpackage=代码所存在的包名
+
+坐标
+	构件
+仓库
+	本地仓库
+	远程仓库
+镜像仓库
+
+完整的项目构建过程包括
+	清理、编译、测试、打包、集成测试、验证、部署
+maven生命周期
+	clean	清理项目
+		pre-clean	执行清理前的工作
+		clean		清理上一次构建生成的所有文件
+		post-clean	执行清理后的文件
+	default	构建项目（最核心）
+		compile
+		test
+		package
+		install
+	site	生成项目站点
+		pre-site	在生成站目点前要完成的工作
+		site		生成项目的站点文档
+		post-site	在生成站目站点后要完成的工作
+		site-deploy	发布生成的站点到服务器上
+
+
+Pom.xml
+	标签
+	projeck		根元素
+		modelVersion	版本
+		groupId		项目的标识和包名可以相同
+		artifactId	模块的标识和项目名-模块名可以相同
+		version		当前项目的版本号，
+				第一个0为大的版本号
+				第二个为分支版本号
+				第三个为小版本号
+				snapshot快照
+				alpha内部测试
+				beta公测
+				Release稳定
+				GA正式发布
+		packaging	默认是jar
+				也可以是war、zip、pom
+		name		项目描述名
+		url		项目地址
+		description	项目描述
+		developers	开发人员列表
+		licenses	许可证信息
+		organization	组织信息
+		
+		dependencies	依赖列表
+			dependency	依赖项
+				groupId
+				artifactId
+				type
+				scope		依赖范围
+				optional	设置依赖是否可选
+						默认为false
+				exclusions	排除依赖传递列表
+					exclusion	排除依赖项
+
+		dependencyManagement	依赖管理
+			dependency	管理父类模块
+		build	
+			plugins		插件列表
+				plugin	插件
+					groupId
+					artifactId
+					version
+		parent		用于继承
+		modules		定义多个模块一起编译
+			module
+
+依赖范围
+classpath
+	编译、测试、运行三种
+scope值
+	compile	默认范围
+	provided 编译测试有效、运行无效
+	runtime	测试和运行
+	test 只在测试有效
+	system 编译测试有效，与本机系统相关联
+	import	导入的范围，表示继承的依赖
+		只在使用dependencyManagement中
+		表示从其他pom导入dependency
+
+依赖传递
+	A->B B->C
+依赖冲突
+	短路优先
+	A->B->C->X(jar)
+	A->D->X(jar)
+	先声明先优先
+聚合和继承
+	

@@ -1,0 +1,18 @@
+﻿客户端的请求和服务器的操作——Servlet监听器用于监听ServletContext（application是由容器创建的上下文对象，范围是整个web应用，且只有一个）、HTTPSession（session保存上下文的一种机制，保存会话，放在服务器端，不管浏览器还是服务器结束都会销毁）、ServletRequest（request客户发出请求时，容器会发出一个servletRequest对象来封装响应数据，访问结束后就会被销毁）等域对象的创建、销毁以及属性的变化
+用途
+统计在线人数和在线用户
+启动时加载初始化信息
+统计网站访问量
+跟spring结合
+
+Session钝化机制（服务器自动完成）：把服务器中不经常使用的session序列化，当使用时反序列化到服务器内存
+监听Session中对象状态变化的监听器：
+注意:这里不是单独建立监听器,而是让被监听的对象的类实现xxxListener接口,也无需在web.xml注册
+1.对象的绑定和解除绑定(即setAttribute/removeAttribute)
+implements HttpSessionBindingListener，还要实现序列化接口Serializable
+绑定:valueBound方法
+解除绑定:valueUnbound方法
+2.对象的钝化和活化
+implements HttpSessionActivationListener
+钝化:sessionWillPassivate方法
+活化:sessionDidActivate方法

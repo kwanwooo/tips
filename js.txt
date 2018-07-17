@@ -1,0 +1,345 @@
+﻿js中6型数据类型：弱类型特性
+5种原始类型：
+number(数字)
+string(字符串)
+boolean（布尔值）
+null
+undefined
+1种对象类型：object对象
+(函数function（Math） ，array， Date，字符串，数值，浏览器对象，DOM对象)
+
+包装对象，就是当基本类型以对象的方式去使用时，JavaScript会转换成对应的包装类型，相当于new一个对象，内容和基本类型的内容一样，然后当操作完成再去访问的时候，这个临时对象会被销毁，然后再访问时候就是undefined
+
+类型检测五种操作符：
+1.typeof 会返回一个字符串，适合函数判断和基本类型的判断（特殊null返回的数据类型是“object”）
+2.instanceof判断对象类型,但是不同的window和iframe对象类型检测不能用
+3.Object.prototype.toString.apply([]) === "[object.Array]"//在IE6,7,8下，对null和undefined检测失效
+  4.constructor
+  5.duck type
+
+表达式
+1. 原始表达式 //常量、直接量、关键字、变量 3.14、"test"、null、i、k、j
+2. 初始化表达式 //[1,2]、{x:1, y:2}
+3. 函数表达式 //var fe = function(){}、(function(){})()
+4. 属性访问表达式 //var o = {x:1}、o.x、o['x']
+5. 调用表达式 //func()
+6. 对象创建表达式 //new Func(1,2)、new Object
+
+特殊运算符的种类：
+1、条件运算符 c?a:b c为true 则取a,否则取b
+2、逗号运算符 a,b 例如 var s = (1,2,3),则s依次赋值，最后输出为3
+3、delete运算符 delete obj.x 删除对象obj中的x属性 在IE9下，obj中必须configurable:true 才可以删除，否则无效
+4、in运算符 判断obj是否有值或window里是否有变量，返回布尔值 例如 attr in json 或 'document' in window
+5、instanceof 判断对象类型 {} instanceof Object // true（返回布尔值）
+6、new运算符 创建一个新对象 new obj / new array ...
+7、this对象 全局用指向window，函数内指向函数本身，浮动指针
+8、typeof 判断对象，返回对象类型 例如 typeof 100 === 'number' // true（判断对应类型字符串）
+9、void 一元的，判断所有值，返回均为undefined
+
+一般delete 运算符可以删除对象的属性，而如果使用方法Object.defineProperty(对象,'属性',{configurable:false})处理了对象，该属性就不会被删除，反之ture就是可以被删除。
+
+语句
+以{}组成块block，常用于for循环和if判断语句中，要注意没有块级作用域，比如for循环中var i=0；写在（）内和写在for循环外面是一样的；还是属于全局变量；
+在函数内定义 var a=b=1；会隐式定义出全局变量b；在函数外获取不到a，为undefined，但可以获取到b
+在ES6面试之后有了let，即开始有了块级作用域
+
+try-catch
+try语句如果抛出异常，则执行catch语句，否则不执行，无论有没有异常，都执行finally语句；try语句必须跟catch或finally语句中至少一个组合使用。
+try catch语句的嵌套语句执行顺序：
+1）如果内部嵌套的try语句抛出异常，但内部没有相配套的catch语句，先执行内部的finally语句，然后跳到最近一层的catch语句执行。
+2）如果内部嵌套的try语句抛出异常，内部有相配套的catch语句，先执行此语句处理异常，再执行内部的finally语句。不会再在外部处理异常。
+3）如果内部嵌套的try语句抛出异常，内部有相配套的catch语句，并且catch语句也抛出异常，如果内部的catch语句有对异常的处理，先执行异常处理语句，然后执行内部的finally语句，最后执行离内部catch语句抛出异常最近一层的catch语句处理异常。
+
+函数
+函数声明：会被预先处理（或者叫函数前置/钳制），so，在声明之前调用该函数不会报错lalala...
+函数表达式：
+除了这两种方法之外，还可以通过new function构造器的方式，去创建函数对象。
+for in
+1.顺序不确定，for - in 中遍历的属性并非一定按定义时的顺序，受引擎的影响
+2.enumerable 为 false 时的属性将不会出现
+3.for - in 对象属性时受原型链影响，若obj 的原型链上有z属性，在遍历时z 也会出现
+with语句：
+可修改当前的作用域。
+现在JS不建议使用with。严格模式下已禁用
+
+严格模式
+JS的严格模式：
+定义和优点：严格模式是一种特殊的执行模式，它修复了部分语言上的不足（禁用with），提供了更强的错误检查（重复属性，删除delete不可配置的属性等），并增强了安全性（在eval中使用独立作用域等）；
+模式的使用：
+（1）function func(){'use strict';}好处：向上兼容
+（2）'use strict'; function func(){}指定整个js内的代码都是在严格模式下
+与普通模式的区别：
+在严格模式下，①不允许使用with；②不允许未声明的变量被赋值③arguments变为参数的静态副本，不管参数传与不传，对arguments无影响，但是对象的属性除外；④delete参数，函数名报错⑤delete不可配置的属性报错⑥对象字面量重复属性名报错⑦禁止八进制字面量⑧eval，arguments变为关键字，不能作为变量、函数名⑨eval变为独立作用域，其它地方不可以拿到eval的值；
+
+对象
+对象构造：
+除了本身被赋予的值之外，对象还有几个隐藏标签：
+proto：对象的对象属性prototype上的赋值
+class：对象的种类
+extensible：是否允许该对象继续增加新的属性
+
+另外对象的值(如 x=1)，也有对应的属性或方法，提供一些访问权限的控制
+writable：是否可写
+enumerable：是否能被删除
+configurable:是否能够枚举
+value：值
+get/set：
+
+创建对象
+1、字面量
+2、new/原型链
+delete或者update z 都是操作对象的属性值而不会原型上的值。原型就是通过这种方式实现继承，保证对于原型上的属性值只可读不可改的
+3、object.create-->系统内置的函数
+
+1、属性访问，点操作或者中括号（内部自动砖成字符串）或者for in，
+建议用点。但是如果是要拼的话用中括号。用for in会把原型链的读出来。
+2、访问不存在属性，进行原型链查找，末端找不到，会undefined。
+3、写属性，有的话就修改，没的话就新创建并赋值。 
+4、delete 删除属性，重复删除同一个属性，任然返回true。所以delete并不代表操作成功或者失败了，而是说还有没有这个属性值。prototype不能被删除。
+5、configurable：是否可配置。getOwnPrototypeDescriptor（obj，属性）
+6、var 定义的都不可以删除。函数和函数的函数都不可以被delete掉。隐式创建的变量可以删除（不推荐的语法）。
+7、in操作符会向原型链向上查找的，hasOwnProperty自己有没有（用在for in判断过滤原型上的属性）。
+8、Enumera不了：是否可枚举。 
+9、object.defineProterty创建的对象他对应的属性默认false。而字面量和new和赋值而创建的对象的默认的是true
+10、！=undefined。就是不等于null和undefined、
+
+get/set方法
+1、设置属性值时，如果当前对象没有这个属性，则会通过原型链向上查找这个属性。
+2、如果原型上是通过get/set方法来定义的这个属性，那么读写都只会通过get/set方法；这种情况下只能通过Object.defineProperty来为当前对象添加这个属性。
+3、如果原型上就是普通的属性赋值，那么会给当前对象增加一个属性
+4、在原型链上使用 defineProperty() 方法添加属性后，实例如果需要添加同名属性则也要用 defineProperty() 方法。
+
+属性列表
+Object.getOwProertyDescriptor(obj,property_name);<br>
+value: 属性值
+writable: 该属性是否可写，可改变<br>
+enumerable：该属性是否可被枚举，就是可在for in中出现<br>
+configurable： 该属性的标签是否可改变，是否可用delete将该属性删除。
+
+用defineProperty定义属性时，默认configurable为true，如果设置为false后，该属性不管是什么方式都无法更改。
+
+对象标签【proto、class、extensible】
+proto原型指向构造器的prototype属性
+class表示对象的类型
+extensible对象是否可扩展
+getOwnPropertyDescriptor指定对象的属性标签描述符
+Object.isExtensible();不改变标签属性
+Object.preventExtensible();
+Object.seal();//configurable=false
+Object.isSeald();
+Object.freeze();writable=false;configurable=false
+Object.isFrozen();
+针对对象，不改变原型链
+
+序列化
+通过全局的JSON.stringify(obj);做序列化处理
+注意：
+1、当你对象中有属性的值是undefined的时候，这该属性是不会出现在序列化字符串的结果里
+2、当你属性的值是NaN或者Infinity时，序列化的结果是null；当你的属性值是new Date（），序列化的结果是UTC的时间格式
+
+后端返回JSON数据，则用JSON.parse来转化；合法的JSON的属性必须用双引号引起来
+
+valueOf - 尝试把对象转换为基本类型时自动调用的函数，可自己定义
+
+使用一元运算符 + 可转换为数字
+
+当toString 和 valueOf 同时存在，先寻找valueOf，如果不存在或不合法的值（为对象），则再寻找toString；否则使用valueOf的方法。
+
+数组：
+1、JS中的数组是弱类型的  数组中可以含有不同类型的元素 数组元素甚至可以是对象 或者其他数组；
+2.创建
+   2.1 字面量
+var arr = ['ds','aa'];
+ 2.2 new  Array构造器
+var arr = new Array();
+var arr = new Array(10); 则表示该数组有10个空元素(只有一个值的时候表示有多少元素)
+var arr = new Array('a','b'); 等价于 ['a','b'];
+
+new  是可以省略的
+
+3.数组的读写
+ 数组元素增减
+用delate可以删除元素，但是数组长度不变，其实delate之后，是设置元素的值为undefined。  
+ arr.push(1)； 在数组尾部添加元素
+arr.unshift()；在数组头部添加元素
+delete arr[2]; 是将数组中的下标为2的元素 变成undefined  并非真正的删除
+arr.pop()  删除数组的最后一个元素
+arr.shift() 删除数组的第一个元素
+
+
+数组迭代  for循环  for in 遍历（定义在原型上的属性也会遍历出来） 使用hasOwnProperty可以避免将原型上的属性遍历出来
+
+for(i in arr){
+if(arr.hasOwnProperty(i))
+//不会遍历出原型上的元素
+}
+
+1.join()方法 默认是将字符串转换为字符串，并以“,”隔开元素，而join()中的参数就是替换字符串中的“,”，
+而new Array(n+1).join(str)的原理是,创建一个n+1大小的数组，若用join()方法会产生含n个“,”的字符串，而str正好代替这些“,”以造成重复n次str参数的字符串。
+2.reverse()方法 将数组的顺序颠倒，注意：原数组会被改变成颠倒后的数组。
+3.sort()方法 sort()方法只会对数组进行字符顺序上的排序，例如a,b,c,d，而如果是数字，则会取第一位数的字符顺序进行排序，改完以后原数组会被修改。如果想用sort进行数字上的排序，则应写入函数参数function(a,b){return a-b;}，这是升序排列，反之降序是b-a。
+4.concat()方法 作用是合并数组，返回值是合并后的数组，原数组不会改变。如果参数是一个一维数组（没有嵌套），则合并的时候会拉平数组，如果是嵌套数组，合并后只会拉平最外一层。
+5.slice()方法 切断数组，原数组不会修改，如果传入一个参数n，则返回第n+1个到最后一个元素的数组，如果传入n,m，则返回第n+1到m元素的数组，-1代表最后一个元素，-2代表倒数第二个元素，以此类推，若输入的参数为负数i,j，则返回倒数第|i|个到倒数第|j|+1个元素，总结来说，对于正数，左区间开，对于负数，右区间开。
+6.splice胶结方法 切断数组胶结数组，原数组会被修改，输入参数n，那么原数组第n+1个元素到最后一个元素都会被删除（会作为该函数的返回值），如果输入参数m,n，则删除第m+1个到第m+n个元素。如果输入两个以上的参数则删除前两个参数所指定的元素，替换上剩下的参数
+
+数组的方法(ES5的方法)
+1.forEach  遍历
+2.map 映射
+var arr = [1,2,3];
+arr.map(function(x){
+return x +10;
+});//【11，12，13】
+arr;//[1,2,3]
+原数组未被修改
+
+3.filter 数组过滤
+arr = [1,2,3,4,5,6,7,8,9,10];
+arr.filter(function(x,index){
+return index%3 ===0 || x>=8;
+});   [1,4,7,8,9,10];
+
+arr; 原数组未被修改
+
+4. 数组判断
+
+every  所有的元素都符合条件 返回true  否则返回false
+ some   某个元素符合条件则返回true  若所有的元素都不符合条件则返回false
+
+var arr =[1,2,3];
+arr.every(function(x){
+return  X<10;
+});//true
+
+arr.every(function(x){
+return x < 3
+});//false
+6.reduce  数组中的元素两两之间的某些操作 从左到右
+reduceRight 从右往左
+var arr = [1,2,3];
+var sum = arr.reduce(function(x,y){
+return x+ y
+},0);//6
+传入了一个0  则x相当于0 y 相当于1  然后值1 ；
+                    然后此时 x 相当于1  y 相当于2 和为3
+                    x相当于3 y 相当于3 和为6   所以结果为6 
+如果不传入0这个值 则X从数组的第一个元素开始  循环两两元素相加
+reduceRight 同理 只不过是从右往左开始两两操作
+7.indexOf 数组的检索 
+indexOf（a,b）;a 是查找的元素  b是开始查找的位置  正数从左数的位置  负数从右数的位置
+indexOf(元素)； 返回的是元素的下标 不存在返回-1
+lastIndexOf 从右往左查
+
+函数
+js中的函数也是对象
+直接调用：foo();
+对象方法：o.method();
+构造器：new Foo();
+call/apply/bind：fund.call(o);
+
+
+函数声明 VS. 函数表达式 VS. 函数构造器
+函数声明不允许立即调用，因为它会前置
+函数表达式不可以通过函数的名字去调用
+
+var add = function nft(){
+};
+nft(); // 报错！
+add(); // 正常
+一般的函数调用，如果没有return语句，最后会返回一个undefined。
+函数作为构造器调用时，如果没有return语句，或者return后面是基本类型的话，返回this。
+
+this
+全局对象中的this指的是window对象，但是在严格模式下时undefined.
+在对象中对象方法中的this值得是当前的对象,或者把函数作为对象的方法是用this都是指当前对象.
+对象原型链上的方法中的this也指的是当前对象。
+对象中的get/set方法中的this也指的是当前对象。
+构造器中的this指的是构造器函数prototype中的原型，当new一个对象时就会将构造器的prototype中的this赋值个当前对象
+
+func(p1, p2) 等价于 func.call(undefined, p1, p2)
+obj.child.method(p1, p2)等价于 obj.child.method.call(obj, p1, p2)
+func.call(context, p1, p2)
+this指代call的第一个参数
+
+判断this的指向（1-4优先级逐级递减，1优先级最高，4优先级最低）：
+1、函数被new调用，this指向由new新构造出来的这个对象；
+2、函数通过call()、apply()、bind()调用，this指向被绑定的对象；
+3、函数作为方法被调用，this指向这个对象（即常说的对象上下文）；
+4、默认（非严格模式）情况下，this指向window,  严格模式下，this指向undefined。
+
+闭包的理解：
+闭包就是能够读取其他函数内部变量的函数
+可以把闭包简单理解成“定义在一个函数内部的函数”。
+所以，在本质上，闭包就是将函数内部和函数外部连接起来的一座桥梁。
+普通函数：调用之后就被释放
+闭包作用：点击事件，用到外部变量，有了闭包会更加方便。
+循环闭包的错误：如图错误。addEventListener（）是一个回调函数，当我点击的时候才会获取这个i的值。但i在整个初始化的时候i已经是4。解决方法加多一个立即执行的匿名函数。
+闭包的好处：函数有自己的作用域，定义的变量外部访问不到。封装具体的复杂的函数逻辑
+
+作用域：
+JS只有全局作用域和局部（函数）作用域，没有块级作用域【ES6引入了块级作用域】。所以在条件语句、循环语句等内部声明的变量，在语句外也是可以访问到的。
+
+作用域链：内部作用域可以访问外部作用域中的变量和函数，作用域链的前端为当前执行环境、终端为全局环境。
+    function outer(){
+        var i = 1;
+        var func = new Function("alert(i)"); // 无法访问到i，弹出undefined
+        function inner(){ alert(i); }  // 可以访问到i，弹出1
+    }
+
+这种叫自执行函数表达式
+在这种情况下，解析器在解析function关键字的时候，会将相应的代码解析成function表达式，而不是function声明。
+
+// 下面2个括弧()都会立即执行
+
+(function () { /* code */ } ()); // 推荐使用这个
+(function () { /* code */ })(); // 但是这个也是可以用的
+
+// 由于括弧()和JS的&&，异或，逗号等操作符是在函数表达式和函数声明上消除歧义的
+// 所以一旦解析器知道其中一个已经是表达式了，其它的也都默认为表达式了
+
+var i = function () { return 10; } ();
+true && function () { /* code */ } ();
+0, function () { /* code */ } ();
+
+// 如果你不在意返回值，或者不怕难以阅读
+// 你甚至可以在function前面加一元操作符号
+
+!function () { /* code */ } ();
+~function () { /* code */ } ();
+-function () { /* code */ } ();
++function () { /* code */ } ();
+
+函数声明过程函数与前面声明的函数或变量重名会覆盖之前声明的函数或变量
+变量声明过程变量与前面声明的函数或变量重名会忽略之前声明的函数或变量，但初始化过程则会覆盖之前声明的函数或变量
+VO变量对象 
+AO函数对象 函数表达式的声明不会影响AO 因此无法在函数外直接通过函数名访问函数表达式声明的函数
+
+prototype 属性与原型
+
+function Foo(){}
+声明构造器 Foo 时， Foo 构造器默认会有 Foo.prototype 属性，Foo.prototype 属性本身也是对象，因此可以叫做“对象属性”
+同时，Foo.prototype 默认又会有两个属性 Foo.prototype.constructor 和 Foo.prototype.__proto__
+其中，Foo.prototype.__proto__ 就是 Foo.prototype 的原型
+Foo.prototype.__proto__ 又指向 Object 的 prototype 属性，即 Object.prototype
+
+Foo.prototype 的作用：
+当使用 var obj = new Foo() 生成 Foo 的实例 obj 时，Foo.prototype 对象属性会当作 obj 的原型 obj.__proto__
+
+prototype 属性与原型 __proto__ 的关系：
+prototype 是构造器（函数对象）上面预置的对象属性，原型 __proto__ 是对象（实例对象）上的原型
+对象的原型 __proto__ 指向其构造器的 prototype 属性
+
+并不是所有的函数原型都是object.prototype，例如object.create(null);
+并不是所有的函数都有prototype属性，例如bind返回的函数
+
+动态修改prototype 的 属性 时，会影响 已创建 或 新创建 的 所有 实例
+把 prototype 赋值为另外一个对象，已创建的实例不会有所改变，但会影响后续创建的实例
+
+需要for-in时不枚举自己添加的属性，可使用 defineProperty(Object.prototype,"x",{writable:true,value:1});
+此时 enumerable 为 false.
+
+1.instanceof左边一般是对象，右边是一个函数(构造器)。假如右边不是函数对象，会报错；假如左边不是对象，会直接返回false；
+2.instanceof用来判断右边构造器的prototype属性是否出现在左边对象的原型链上；
+3.从js的解释器层面来讲，instanceof是比对对象的，执行环境不同，构造器不同，instanceof方法失效（不同window和iframe之间的对象类型检测不能使用instanceof）
+
+实现继承的方式有三种
+1. Student.prototype = Person.prototype;( 不推荐 )  2. Student.prototype = new Person(); 这种方式如果构造器有参数就不好传参数；3. Student.prototype = Object.create(Person.prototype); Student.prototype.constructor = Student;-->为了不让Student.prototype的constructor不变为Person； 若不支持 Object.create() 则模拟一个方法 if( !Object.create ){}

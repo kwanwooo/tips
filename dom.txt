@@ -1,0 +1,289 @@
+﻿1.1课程介绍
+1.DOM是Docunment、object、Model的缩写，直译过来就是文档对象模型。
+2.DOM的地位和作用
+1.HTML→CSS(定义样式)
+2.HTML→JavaScript（赋予行为）
+通过JavaScript实现页面的交互和动画效果等等。
+3.那么JavaScript通过什么来实现的呢？
+1.通过ECMAScript标准，我们可以编写程序让浏览器来解析
+2.利用ECMAScript我们可以通过BOD对象来操作浏览器窗口、
+浏览器导航对象、屏幕分辨率、浏览器历史、Cookies等等
+3.但是通过BOD来实现的交互远远不够,要实现页面的动态交互
+和效果，操作HTML才是核心。
+4.那么如何操作HTML呢，那就是DOM。简单来说，DOM给我们提
+供了用程序来动态控制HTML的接口，也就是早期的DHTML的
+概念。
+5.因此DOM处在JavaScript赋予HTML具备动态交互的核心地位
+上。
+注:BOM(Browser Object Model) 是指浏览器对象模型
+cookies （从客户端的硬盘读取数据的一种技术）
+3.DOM探索系列课程要点
+1.想要安全的操作DOM必须等到页面上所有的HTML都解析成DOM节点，
+才能进行操作，因此了解DOMReady是第一步。
+2.接着我们来探究节点，学习文档和节点的类型，元素节点的判断、
+元素节点的继承层次、以及节点的分类等内容。
+3.然后学习节点的操作，比如节点创建与删除、节点查找与筛选等。
+4.接着学习表格与表单的操作
+5.最后我们探讨属性系统和样式设置
+6.顺序图
+1.DOMReady→2.节点探究→节点创建与删除→节点查找与筛选→
+表单与表格操作→属性系统→样式设置
+4.基础详解篇课程要点
+1.首先通过滑动门特效课堂案例感性认识DOM在开发中是如何运用的
+2.其次，了解什么DOM以及与DOM相关的基础概念
+3.重新认识HTML与XHTML文档类型，以及文档的各种节点类型
+4.接着详细的实现DOMReady
+
+DOM1级主要定义了HTML和XML文档的底层结构。在DOM1中，DOM由两个模块组成：DOM Core（DOM核心）和DOM HTML。其中，DOM Core规定了基于XML的文档结构标准，通过这个标准简化了对文档中任意部分的访问和操作。DOM HTML则在DOM核心的基础上加以扩展，添加了针对HTML的对象和方法，如：JavaScript中的Document对象.
+DOM2级在原来DOM的基础上又扩充了鼠标、用户界面事件、范围、遍历等细分模块，而且通过对象接口增加了对CSS的支持。DOM1级中的DOM核心模块也经过扩展开始支持XML命名空间。在DOM2中引入了下列模块，在模块包含了众多新类型和新接口：
+DOM视图（DOM Views）：定义了跟踪不同文档视图的接口
+DOM事件（DOM Events）：定义了事件和事件处理的接口
+DOM样式（DOM Style）：定义了基于CSS为元素应用样式的接口
+DOM遍历和范围（DOM Traversal and Range）：定义了遍历和操作文档树的接口
+DOM3进一步扩展了DOM，在DOM3中引入了以下模块：
+
+DOM加载和保存模块（DOM Load and Save）：引入了以统一方式加载和保存文档的方法
+DOM验证模块（DOM Validation）：定义了验证文档的方法
+DOM核心的扩展（DOM Style）：支持XML 1.0规范，涉及XML Infoset、XPath和XML Base
+
+文档的类型
+HTML（超文本标记语言）用来显示数据，不能解释影音文件和化学公式等，不利于扩展
+XML（可扩展标记语言）用来描述数据，什么是数据，如何存放数据
+文档类型
+1.超文本标记语言，HTML(Help Text Markup Language)W3C万维网联盟维护<br>
+  -用来显示数据，重点是如何显示数据<br>
+  -使用定义的标准标签，html标签作为根元素<br>
+2.可扩展标记语言，XML(Extensable Markup Language)<br>
+  -用来描述数据，重点是什么是数据，如何存放数据<br>
+  -与HTML一样，由标签、属性和子节点组成<br>
+  -标签名可根据描述数据的语义进行定义，可以是英文或者汉字
+XHTML（早期 HTML与xml合并作用）
+
+ 元素节点，
+> 拥有子节点和文本，是唯一能拥有属性的节点类型<br>
+ 属性节点，
+> 元素中的属性，是附属于元素的，是包含他的元素节点的一部分，不属于文档树的一部分<br>
+ 文本节点，
+> 只包含文本内容(可以只包含空白)的节点，在xml中称为字符数据；<br>
+> 在文档树中元素的文本内容和属性的文本内容都是由文本节点表示的<br>
+> 某个节点的空白区域，也是属于文本节点<br>
+ 注释节点： 
+> 表示注释的内容<br>
+ 文档节点： 
+
+nodeType判断节点类型：
+
+非ie中，可以使用字符串常量判断。divNode.nodeType == Node.ELEMENT_NODE。
+ie中，由于没有Node对象，需使用数值判断。divNode.nodeType == 1(即元素节点的编号)。
+
+> 文档树的根节点，是其他节点的父节点；
+> 注意不是html或者xml的根元素。根元素是作为文档节点的子节点出现的<br>
+> 整个代码之上看做是文档节点<br>
+ 文档类型节点： 例;<!doctype html><br>
+ 文档片段节点：
+> 文档片段是轻量级的或者是最小的Document 对象，他表示文档的一部分或者是一段，他不属于文档树；
+> 他的特殊行为：占位符，暂时存放一次插入文档的节点，同时有利于剪贴复制操作
+
+nodeName-nodeValue
+获取某个元素的节点名称和节点值：nodeName和nodeValue属性值；
+获取该节点的属性：ele.attributes; //返回类数组对象的该元素的所有属性
+获取该节点的子节点：ele.childNodes;//返回所有子节点的类数组对象
+document.createDocumentFragment();// 创建一个文档片段
+document.doctype; // 获取文档类型
+
+注意：body的第一个子节点不是div，是div前面的空白节点
+
+domReady：
+html标签需要通过浏览器渲染引擎的解析才会变成dom节点，在刷新url地址的时候就有dom构建的过程。当所有html都转化为节点后，dom树才构建完毕，简称为dom ready。所以，一旦把script放在body前面，dom还没生成，就调用了dom(document.xxxx)明显是不行的（javascript以编写顺序解析---脚本语言）
+
+浏览器渲染引擎的基本渲染流程：
+1、解析HTML，构建DOM树（构建DOM节点）；
+
+2、构建渲染树（解析样式信息，包括外部的css文件、style标签中的样式）。渲染树由一些包含有各种属性的矩形组成，他们将会按照正确的顺序显  示到屏幕上；
+
+3、布局渲染树（布局DOM节点），执行布局的过程，将确定每个节点在屏幕上的确切坐标；
+
+4、绘制渲染树（绘制DOM节点，即遍历渲染树），使用UI后端层来绘制每个节点。
+
+1、window.onload方法是页面DOM树创建完成，外部css、js等引用全部加载完成后才执行window.onload的js代码；不过，例如：页面有100张图品，要点击图片弹出图片名字时间，就不适用window.onload方法，因为图片加载慢，这个方法需要100张图片都加载完成才能执行，会造成浏览器呈现“死”的状态，用户体验差，所以当页面执行操作内容少的话可以用window.onload方法；
+
+isElement  是否是元素节点
+isHTML     是否是HTML的元素节点
+isXML      是否是XML的元素节点
+contains   是否是包含关系
+
+!!的目的是，当操作数是undefined或null时能够返回false
+!!一般用来将后面的表达式转换为布尔型的数据（boolean).
+
+因为javascript是弱类型的语言（变量没有固定的数据类型）所以有时需要强制转换为相应的类型，类似的如: 
+a=parseInt("1234");
+a="1234"+0 //转换为数字 
+b=1234+"" //转换为字符串 
+c=someObject.toString() //将对象转换为字符串 
+其中第1种、第4种为显式转换，2、3为隐式转换.
+
+布尔型的转换，javascript约定和c类似，规则为 :
+false、undefinded、null、0、"" 为 false ;
+ true、1、"somestring"、[Object] 为 true .
+
+ !!el表示判断是否el存在,存在为true,反之为false.
+
+try{
+    testDiv.appendChild(obj); //把要检验的obj作为子节点添加给testDiv节点
+    testDiv.removedChild(obj);//把testDiv中为obj的子节点移除
+   }catch(e){
+       return false;//如果以上两者运行中有错误则返回false 
+       }
+比如你传入的是变量a 但是变量a不是一个节点元素，所以就不能作为节点被添加到testDiv中或者被删除，则会返回false，而如果a是被createElementNode（’a‘）之后，则这个a就是一个被创建的元素节点，可以被添加到任何一个元素节点作为子节点或者被删除，而案例中多出这一步检验也是因为当你使用isElement这个方法检验obj是不是一个元素节点的时候容易出错，也就是可以把一个声明中有nodetype=1的json对象也当做成元素节点，很显然这个方法不严谨也不符合检测的目的，所以才要检测真假：【如果obj本身就是元素节点，则就必然可以作为子节点被添加和被删除，则返回判断结果为真！
+如果obj本身是有声明过nodetype=1的json对象，即使obj在第一层if判断中nodetype=1通过，则第二层检测到他不能作为子节点被添加和被删除，则obj必然不是元素节点，返回判断结果为假！】
+
+判断XML和HTML的方法：
+
+先使用isElememt判断是否为元素节点，再用creatElement判断元素名大写小写是否都等同，大小写不等同为XML，等同为HTML
+
+4-4 如何判断节点的包含关系contains
+var pNode=document.getElementById('p-node');
+	var cNode=document.getElementById('c-node');
+	alert(pNode.contains(cNode));
+	//判断cnode元素节点是否包含 文本节点
+	alert(cNode.contains(cNode.childNodes[0]));
+	//判断pnode元素节点是否包含 文本节点
+	alert(pNode.contains(cNode.childNodes[0]));
+	//***Ie低版本只支持元素节点包含判断
+	/**
+	 * 兼容判断包含关系
+	 * @param  {[type]} a 上层节点
+	 * @param  {[type]} b 下层节点
+	 * @return {[type]}   [description]
+	 */
+	function fixContaion(a,b){
+		try{
+
+			while(b=b.parentNode){
+				if(b===a){
+				//如果b<a(a为父，b为子)循环向上查找b的父节点直到他们是同层关系(a===b)
+					return true;
+				}
+				//如果b>a(如果b为父,a为子),肯定找不到,返回fales
+				return false;
+			}
+		}catch(e){
+			//对于游离于dom树外的节点,返回false.
+			return false;
+		}
+	}
+
+dom节点十分复杂，
+dom操作十分耗性能
+react 提出虚拟dom，合并且屏蔽了无效的dom，大大提高了性能
+
+5-2 HTML嵌套规则
+块状元素和内联元素
+他们两个的区别：
+
+块级元素一般用来搭建网站架构、布局、承载内容
+内联元素一般用来在网站内容中的某些细节或者部位，用以“强调、区分样式、上标、下标、锚点”等等。
+它们可以互相转换。display:inline|block
+块级元素的特点：每一个块级元素都识从一个新行开始显示，其后的元素需要另起一行。
+
+
+嵌套规则：
+
+块级元素可以包含内联元素或某些块级元素，但内联元素不能包含块级元素，它只能包含其它内联元素。
+块级元素不能放在p里面。
+有几个特殊的块级元素只能包含内联元素，不能包含块级元素。如h1,h2,h3,h4,h5,h6,p,dt
+li内可以包含div
+块级元素与块级元素并列、内联元素与内联元素并列。（错误的：<div><h2></h2><span></span></div>）
+
+dom事件
+事件是文档或浏览器窗口中发生的特定的交互瞬间。【JavaScript <------>HTML】
+事件流：描述的是从页面中接受事件的顺序 （IE：事件冒泡流 / Netscape事件捕获流）
+
+事件冒泡流：即事件最开始由最具体的无素（文档中嵌套层次最深的那个节点）接收，然后逐级向上传播到最不具体的那个节点（文档） input----->document
+
+1.事件冒泡：事件由子元素获取并沿DOM树向上传播
+2.事件捕获：事件由根元素获取并沿DOM树向下分发
+
+HTML事件处理程序
+HTML事件处理程序(现在不建议使用了):事件直接加在HTML代码中
+缺点：HTML和js代码高耦合，如果修改，就要修改两个地方--HTML元素内和script函数。
+
+DOM0级事件处理程序 （用得比较多）：
+先把元素取出来，然后为其属性添加一个事件的方法叫DOM0级处理程序。
+ 它是一种较传统的方式：把一个函数赋值给一个事件处理程序的属性。
+ 优点：简单，跨浏览器的优势
+ var btn2=document.getElementById("btn2");---先获取出元素，定义对象 //取得btn2按钮对象
+ btn2.onclick=function(){alert('这是通过DOM0级添加的事件！')}----让 事件以对象的属性 的形式出现。 //给btn2添加onclick属性
+
+DOM2级事件处理程序
+定义了两个方法--用于处理指定和删除事件处理程序的操作：
+addEventListener()添加事件监听程序
+removeEventListener()移除事件监听程序
+三个参数设置;事件名称，处理方法(函数)，布尔值--false：表示在冒泡阶段调用事件处理程序(可以最大限度的兼容浏览器)，一般设为false；true表示在捕获阶段调用事件处理程序
+
+
+btn3.addEventListener('click',showMes,false);
+注意：
+1、若事件名称有on，则需去掉on。onclick --> click，onmouseover --> mouseover等等；
+2、false 最大限度兼容所有浏览器--事件冒泡流。
+3.通过addEventListener添加的事件只能通过removeEventListener来删除。--参数要与添加事件时相同
+btn3.removeEventListener(参数);//参数必须和btn.addEventListener的参数一致，删除事件监听
+
+DOM0级和DOM2级事件处理程序可以给一个事件绑定多个函数，事件触发的时候会按照绑定顺序执行各个函数。如下所示：
+btn3.addEventListener('click',showMes,false);
+btn3.addEventListener('click',showMes,function(){alert(this.value）;},false);
+
+缺点：IE不支持该事件
+
+IE事件处理程序及跨浏览器解决
+1.IE事件处理程序：IE也提供了类似DOM2级事件处理程序
+attachEvent()添加事件
+detachEvent()删除事件
+接收相同的两个参数，事件处理程序的名称和事件处理程序的函数。去掉了布尔值，不使用第三个参数的原因:IE8以及更早的浏览器版本只支持事件冒泡！
+在ie下给btn3添加事件
+btn3.attachEvent('onclick',showMes);
+主意：在ie事件处理程序上，又要把on加上
+btn3.detachEvent('onclick',showMes);
+支持ie事件处理程序的浏览器主要有ie和opera两个浏览器。
+
+2.跨浏览器事件处理程序
+var eventUtil = {
+//添加句柄
+addHandler:function(element,type,handler){
+if(element.addEventListener){element.addEventListener(type,handler,false);} // DOM2级事件处理程序
+else if(element.attachEvent){element.attachEvent('on'+type,handler);} // IE事件处理程序
+else{element['on'+type]=handler;} // DOM0级事件处理程序
+},
+//删除句柄
+removeHandler:function(element,type,handler){
+if(element.removeEventListener){element.removeEventListener(type,handler,false);} // DOM2级事件处理程序
+else if(element.detachEvent){element.detachEvent('on'+type,handler);} // IE事件处理程序
+else{element['on'+type]=null;} //DOM0级事件处理程序
+}
+}
+eventUtil.addHandler(btn3,'click',showMessage);
+
+3.js中所有用'.'的地方都可以使用'[]'
+如：对象的点击事件element.onclick===element['onclick']
+
+什么是事件对象？在触发DOM上的事件时都会产生一个对象
+事件对象EVENT
+①DOM中的事件对象  属性
+（1）、type属性用于获取事件类型
+（2）、target属性用于获取事件目标
+（3）、stopPropagation()方法 用于阻止事件冒泡
+（4）、preventDefault() 方法 阻止事件的默认行为
+如果一个div里面有一个button，button和div都绑定了click事件，如果是事件冒泡，那么点击button的时候，首先触发button的处理函数，然后触发div的处理函数。（由内而外）
+如果有时候不想冒泡，也就是不希望div的事件被触发，那么需要阻止事件冒泡。stopPropagation()方法
+如果需要阻止a标签的默认属性跳转，可以使用阻止事件的默认行为preventDefault()方法
+
+IE中的事件对象
+1.type属性 用于获取事件类型
+2.srcElement属性 用于获取事件目标
+IE和其它浏览器兼容：
+event = event||window.event  (IE8之前的浏览器用window.event)
+var  ele = event.target  ||event.srcElement
+3.ancelBubble属性 用于阻止事件冒泡。
+true表示阻止冒泡，false表示不阻止冒泡。
+4.returnValue属性   用于阻止事件的默认行为。 
+设置false为阻止事件的默认行为。（ie中基本都是属性，没有方法）

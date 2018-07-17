@@ -1,0 +1,36 @@
+﻿json 基础知识
+	与开发语言无关，轻量级的数据格式。全称JavaScript Object Notation
+	易读、容易编写。
+	k-v 键值对
+数据结构
+	Object
+		花括号包括的键值对
+		Key必须是string
+		
+		例子
+		{
+			"name" : "Kwanwoo",
+			"age" : 21,
+			"birthday" : "1996-02-26",
+			"school" : "ZUA",
+			"major" : ["CS","SE"],
+			"has_girlfriend" : false,
+			"car" : null,
+			"house" : null,
+			"comment" : "note"
+		}
+	
+	Array
+		中括号，逗号分隔
+基本类型
+	string
+	number
+	true
+	false
+	null
+java中两种常见的json处理方式
+	在java中利用put构建json数据
+	json对象传入HashMap构建json数据
+	json对象传入Bean构建构建json数据
+综合运用
+Gson除了构建json数据之外，将json数据转化为java Bean对象。

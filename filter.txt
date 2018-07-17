@@ -1,0 +1,22 @@
+﻿过滤器链：	
+		第一个过滤器代码1
+	  	doFilter
+	  	第二个过滤器代码1
+	  	doFilter 
+	 	浏览器数据 
+		第二个过滤器代码2 
+		第一个过滤器代码2
+过滤器类型：
+ servlet2.5有4种过滤器：REQUEST、FORWARD、INCLUDE、ERROR
+转发和重定向的区别： 重定向会跳转到新的页面
+REQUEST：用户直接访问页面时，Web容器将会调用过滤器
+FORWARD：目标资源通过RequestDispatcher的forward访问时，该过滤器会被调用或jsp标签forward
+INCLUDE：目标资源是通过RequestDispatcher的include方法访问时，该过滤器会被调用或者jsp标签include
+ERROR：目标资源是通过声明式异常处理机制调用时，过滤器将被调用
+servlet3.0 ASYNC 支持异步处理
+过滤器应用场景：
+1.对用户请求进行统一认证
+2.编码转换
+3.对用户发送的数据进行过滤替代
+4.转换图像格式
+5.对响应的内容进行压缩、加密
