@@ -1,0 +1,61 @@
+﻿JQuery EasyUI 是一个基于JQuery的框架，集成了各种用户界面插件。
+	提供了建立现代化的具有交互性的js应用的必要功能。
+	不需要写太多js代码，一般情况下只需要使用一些html标记来定义用户界面。
+	HTML网页完整的开发框架。
+	节省了开发产品的时间和规模。
+	简单，但是功能强大。
+EasyUI从以下几个方面介绍
+	EasyUI应用
+		普通表格（点击编辑按钮，弹窗编辑）
+		Grid表格（编辑直接填写）
+		展开行明细编辑表格（点击+号下拉框显示编辑）
+		
+	EasyUI 拖放
+		可以在Web应用中实现简单的拖放功能
+	EasyUI 菜单和按钮
+		菜单可以通过
+    <div id="mm" class="easyui-menu" style="width:120px;">
+        <div onclick="javascript:alert('new')">New</div>
+        <div>
+            <span>Open</span>
+            <div style="width:150px;">
+                <div><b>Word</b></div>
+                <div>Excel</div>
+                <div>PowerPoint</div>
+            </div>
+        </div>
+        <div icon="icon-save">Save</div>
+        <div class="menu-sep"></div>
+        <div>Exit</div>
+    </div>
+js代码
+	$('#mm').menu('show', {
+		left: 200,
+		top: 100
+	});
+		链接按钮可以通过<a>标签来创建
+		菜单按钮可以通过定义链接按钮和一个菜单实现
+		分割按钮也可以通过链接按钮和一个菜单实现
+	EasyUI 布局
+		Layout 布局
+			边框布局（border layout）分为east、west、north、south、center五个区域。
+		Panel 面板
+			在panel中使用多个layout可以设计更复杂的布局
+		Accordion 折叠面板
+			在Accordion中包含多个panel，面板分为头部（header）和内容（body），头部可见，内容隐藏不可见。
+		Tabs 标签页/选项卡
+			在tabs中，一次只显示一个panel，每个panel都包括了标题（title）、图标和关闭按钮。点击标题可以显示panel的内容。
+			调用"add"方法可以添加新的Tabs
+
+
+	EasyUI 数据网格
+		可以将table转化为DataGrid，并在其中添加分页功能（设置pagination="true"，会将page、rows两个参数传到服务器）、查询功能、选中行功能（第一个选中的行、所有选中行）、添加工具类（增加、删除、修改功能）、设置冻结行、排序（设置sortable="true"）、添加复选框、行内编辑等功能。
+	EasyUI 窗口
+		可以创建对话框、提示框、按钮等。
+	EasyUI 树形菜单
+		树结构、带复选框的树形菜单、带拖放功能的树形结构等。
+	EasyUI 表单
+		可以通过EasyUI提交一个表单（Form）。
+		可以通过EasyUI通过树形结构的下拉框选择参数（比如城市）
+		通过通过EasyUI对表单进行校验
+		
