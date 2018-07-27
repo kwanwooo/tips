@@ -1,10 +1,11 @@
-﻿spring 的核心：1. aop （面向切面编程），即不通过修改源代码来扩展和增强功能
-                             2. ioc（控制反转），即通过spring配置来创建类的对象，而不是new一个对象
+﻿spring 的核心：
+	1. aop （面向切面编程），即不通过修改源代码来扩展和增强功能
+	2. ioc（控制反转），即通过spring配置来创建类的对象，而不是new一个对象
 
 spring为javaEE三层结构的每一层都提供了不同的技术支持：
-      web层：springMVC
-      service层：spring 的 ioc
-      dao层：spring 的  jdbcTemplate
+	web层：springMVC
+	service层：spring 的 ioc
+	dao层：spring 的  jdbcTemplate
 
 
 ioc底层原理
@@ -34,12 +35,7 @@ public class User {
         db.addEntry(userInstance);
     }
 }
-public class User {
-    public void addToDB()
-    {
-        db.addEntry(userInstance);
-    }
-}
+
 这里面有一个方法，addToDB，功能是把一条数据添加到数据库中。但是现在我们想新增一个功能，就是添加了一个用户后，同时记录下这个添加操作到日志中。传统的做法是，修改addToDB这个方法， 在后面增加用于添加日志的相关代码，如archive.addEntry(record)，这就是传统的机制。
 
 我们每次做修改，都要修改原来的类，这不是一个很好的方法。于是有了后来的纵向继承机制。
@@ -54,10 +50,6 @@ public class UserArchive{
         archive.addEntry(archiveInstance);
     }
 }
-public class UserArchive{
-    public void addArchive() {
-        archive.addEntry(archiveInstance);
-    }
 }
 然后我们在原来的类中extends UserArchive（继承），用super.addArchive()调用父类的方法。这就是纵向继承机制。
 
@@ -73,15 +65,7 @@ public class UserArchive{
 public interface User {
     public void add();
 }
-public interface User {
-    public void add();
-}
 
-public class UserImpl implements User {
-    public bpod add() {
-        db.addEntry(userInstance);
-    }
-}
 public class UserImpl implements User {
     public bpod add() {
         db.addEntry(userInstance);
@@ -115,20 +99,6 @@ public class User {
     }
 }
 
-public class User {
-    public void add() {
-        db.addEntry(userEntry);
-    }
-    public void delete() {
-        db.deleteEntry(userEntry.getId());
-    }
-    public void update() {
-        db.updateEntry(userEntry.getId(), newUserEntry);
-    }
-    public UserEntry query() {
-        return query(UserEntry.class, id);
-    }
-}
 AOP就是不改源代码，来拓展这些函数的功能
 
 JointPoint 连接点
@@ -161,20 +131,7 @@ Aspect 切面（重点）
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-imooc spring
+spring
 
 
 
