@@ -1,5 +1,4 @@
-﻿11512-C8A4-1756-8687-62EA
-属性配置
+﻿属性配置
 @Value
 @Component
 @ConfigurationProperties
@@ -12,7 +11,7 @@ java -jar 方式打开
 
 Controller 控制器，接收用户端的请求
 @Controller 处理http请求
-@RestController Spring4后新加，返回json需要@ResponseBody配合@Controller
+@RestController Spring4后新加，返回json 之前需要@ResponseBody配合@Controller
 @RequestMapping 配置url映射，通过url访问到方法 get post (postman插件可以检测)
 @PathVariable 获取url中的数据
 @RequestParam 获取请求参数的值
@@ -27,3 +26,24 @@ web进阶
 	使用AOP处理请求
 	统一异常处理
 	单元测试
+使用devtools进行热部署
+	在pom.xml中添加依赖
+	在application.properties配置devtools
+读取配置文件信息
+	1. 创建.properties文件
+	2. 创建配置文件的java bean
+		@Configuration//说明为该类读取配置
+		@ConfigurationProperties(prefix="xxx")//前缀为xxx，需要在pom.xml中添加依赖
+		@PropertySource(value="classpath:resource.properties")//配置文件位置
+	3. 在controller层写使用该配置文件的方法
+		a )
+			@Autowired
+			private Resource resource;
+		b )
+			BeanUtils.copyProperties(resource, bean);
+整合模版引擎
+	整合freemarker
+		1.在pom.xml中添加依赖
+		2.在application.properties配置Freemarker的配置信息
+		3.在目标地址创建.ftl文件
+		4.在controller层写方法跳转
