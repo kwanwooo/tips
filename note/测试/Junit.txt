@@ -1,0 +1,26 @@
+﻿1、Junit 是什么？
+	JUnit是一个Java语言的单元测试框架。它由Kent Beck和Erich Gamma建立，逐渐成为源于Kent Beck的sUnit的xUnit家族中最为成功的一个。
+
+	Junit 测试是程序员测试，即所谓的白盒测试，它需要程序员知道被测试的代码如何完成功能，以及完成什么样的功能。
+
+	Junit是一套框架，继承TestCase类，就可以用Junit进行自动测试。
+
+2、Junit 能做什么？
+
+	通常我们写完代码想要测试一段代码的正确性，那么必须创建一个 main() 方法，然后编写测试代码。测试的代码越多，main() 方法越多，或者将其全部写在一个 main() 方法里面。这也会大大的增加测试的复杂度，降低程序员的测试积极性。而 Junit 能很好的解决这个问题，简化单元测试，写一点测一点，在编写以后的代码中如果发现问题可以较快的追踪到问题的原因，减小回归错误的纠错难度。
+
+3、Junit 的用法
+	在spring下使用junit，需要读取spring的配置文件，比如
+		@RunWith(SpringJUnit4ClassRunner.class)//表示继承了SpringJunit4ClassRunner类
+		@ContextConfiguration("classpath:applictionContext.xml")//告诉junit spring配置文件
+junit4.x
+(1)、使用junit4.x版本进行单元测试时，不用测试类继承TestCase父类，因为，junit4.x全面引入了Annotation来执行我们编写的测试。
+(2)、junit4.x版本，引用了注解的方式，进行单元测试；
+(3)、junit4.x版本我们常用的注解：
+A、@Before 注解：与junit3.x中的setUp()方法功能一样，在每个测试方法之前执行；
+B、@After 注解：与junit3.x中的tearDown()方法功能一样，在每个测试方法之后执行；
+C、@BeforeClass 注解：在所有方法执行之前执行；
+D、@AfterClass 注解：在所有方法执行之后执行；
+E、@Test(timeout = xxx) 注解：设置当前测试方法在一定时间内运行完，否则返回错误；
+F、@Test(expected = Exception.class) 注解：设置被测试的方法是否有异常抛出。抛出异常类型为：Exception.class；
+G、@Ignore 注解：注释掉一个测试方法或一个类，被注释的方法或类，不会被执行。
