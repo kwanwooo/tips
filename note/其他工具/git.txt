@@ -1,9 +1,30 @@
-﻿版本控制发展史(cvs->svn->git->github)
-cvs是始祖，svn诞生于2000年，git诞生于2005年。
+﻿cvs是始祖，svn诞生于2000年，git诞生于2005年。
 svn是集中式，git是分布式。
 CVS 最早期的版本控制软件，是把文件集中保存到中心服务器
 SVN 是在CVS的基础上的加强版，可以还原到某个时间段
 git 是分布式的版本控制软件
 github 是网站托管,是基于git。
-集中式：中心服务器，需要联网(cvs svn)
-分布式：拥有版本库即可(git)
+集中式：版本库是集中存放在中央服务器的，需要从中央服务器取得最新的版本(cvs svn)，编写完成后在推送到中央服务器。
+	缺点：需要联网
+分布式：拥有版本库即可(BitKeeper、git)
+概念：
+	工作区（Working Directory）
+	版本库（Repository）
+	
+创建版本库（仓库，repository）类似一个目录
+	先到一个目录下，使用git init
+添加文件到git仓库
+	1.使用命令git add <file>
+		可以多次使用，提交多个文件，用逗号隔开
+	2.使用命令git commit -m <message>
+		message可以输入本次提交的说明
+查看仓库状态
+	git status
+		可以查看本仓库的当前状态
+	git diff <file>
+		可以查看该文件做了哪些修改
+版本回退
+	git reset --hard commit_id
+		commit_id 可以使用HEAD^表示上一个版本，HEAD^^表示上上个版本，HEAD~100表示前100个版本
+	git log 查看提交历史，以便确定回到哪个版本
+	git reflog 查看每一次提交的命令历史（包括reset）
