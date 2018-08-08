@@ -1,0 +1,57 @@
+﻿实现保龄球计分器
+1. 保龄球规则
+
+1.1 击球规则
+
+一局分为10轮，用球击打10个瓶子，每轮最多可击打2球，第10轮可3球。
+如果第1个球击倒了全部瓶子，称为全倒”strike”，本轮直接结束。
+如果第2个球把剩余的瓶子全部击倒，称为补倒”spare”。
+如果两个球还有瓶子未倒，称为失球”miss”。
+1.2 记分规则
+
+strike：得分为本轮（10分） ＋ 后面2次击球的分数。
+spare：得分为本轮（10分） ＋ 后面1次击球的分数。
+miss： 得分为本轮2次击倒的总数。
+1.3 第10轮补球
+
+第10轮如果投出strike，由于要加上后面2次击球，则之后还要补投2球。
+第10轮如果投出spare，由于要加上后面1次击球，则之后还要补投1球。
+第10轮如果miss，则无须补投。
+1.4 记分例子：
+
+例子1:
+
+轮次	1	2	3	4	5	6	7	8	9	10
+击倒	10	5,4	10	3,6	8,1	0,3	3,7	10	8,2	5,5,9
+得分	19	28	47	56	65	68	88	108	123	142
+例子2:
+
+轮次	1	2	3	4	5	6	7	8	9	10
+击倒	10	10	10	10	10	10	10	10	10	10,10,10
+得分	30	60	90	120	150	180	210	240	270	300
+
+解题思路：
+理解保龄球计分规则，一共有十轮，前9轮击球2次，第十轮最多3次击球。可以把每一轮抽象为一个类Frame(计分格)，里面包含firstScore，secondScore，thiredScore三个属性，一共10轮可以抽象为BowlingScore，包含totalScore 和 Frame[]（一维数组，十个元素代表十轮）。
+totalScore的计算方法
+	伪代码表示BowlingScore表示该对象，Frame表示BowlingScore中的数组对象属性。
+		for(int i = 0; i < 10; i++){
+			if(i!=9) {
+				if(BowlingScore.Frame[i].firstScore==10) {
+					if(BowlingScore.Frame[i+1].firstScore==10&&i!=8) {
+						BowlingScore.totalScore+=BowlingScore.Frame[i+2].firstScore+20;
+					}
+					else {
+						BowlingScore.totalScore+=BowlingScore.Frame[i+1].firstScore+BowlingScore.Frame[i+1].secondScore+10;
+					}
+				}
+				else if(BowlingScore.Frame[i].firstScore+BowlingScore.Frame[i].secondScore==10) {
+					BowlingScore.totalScore+=BowlingScore.Frame[i+1].firstScore+10;
+				}
+				else {
+					BowlingScore.totalScore+=BowlingScore.Frame[i].firstScore+BowlingScore.Frame[i].secondScore;
+				}
+			}
+			else {
+				BowlingScore.totalScore+=BowlingScore.Frame[i].firstScore+BowlingScore.Frame[i].secondScore+BowlingScore.Frame[i].thiredScore;
+			}
+		}
