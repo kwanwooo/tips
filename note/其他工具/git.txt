@@ -9,13 +9,28 @@ github 是网站托管,是基于git。
 分布式：拥有版本库即可(BitKeeper、git)
 概念：
 	工作区（Working Directory）
+		
 	版本库（Repository）
-	
+		在工作区下有一个隐藏目录.git，这个就是Git的版本库。
+		hooks（钩）：存放一些shell脚本
+		info：
+			exclude:存放仓库的信息
+		logs：保存所有更新的引用记录
+		objects：存放所有的git对象
+		refs：
+			head：保存当前最新的一次提交的哈希值
+		COMMIT_EDITMSG：最新提交的一次Commit Message，git系统不会用到，给用户一个参考
+		config：git仓库的配置文件
+		description：仓库的描述信息，主要给gitweb等git托管系统使用
+		FETCH_HEAD： 是一个版本链接，指向着目前已经从远程仓库取下来的分支的末端版本
+		HEAD：映射到ref引用，能够找到下一次commit的前一次哈希值
+		index：暂存区（stage），一个二进制文件
+		ORIG_HEAD:HEAD指针的前一个状态
 创建版本库（仓库，repository）类似一个目录
-	先到一个目录下，使用git init
+	先到一个目录下，使用git init命令将该目录变为git管理的仓库
 添加文件到git仓库
 	1.使用命令git add <file>
-		可以多次使用，提交多个文件，用逗号隔开
+		git add . 可以将所有文件添加
 	2.使用命令git commit -m <message>
 		message可以输入本次提交的说明
 查看仓库状态
@@ -23,8 +38,101 @@ github 是网站托管,是基于git。
 		可以查看本仓库的当前状态
 	git diff <file>
 		可以查看该文件做了哪些修改
+		git diff #
+			就是查看工作区和暂存区的不同 
+		git diff--cached
+			就是查看暂存区和master的不同
 版本回退
 	git reset --hard commit_id
 		commit_id 可以使用HEAD^表示上一个版本，HEAD^^表示上上个版本，HEAD~100表示前100个版本
-	git log 查看提交历史，以便确定回到哪个版本
+	git log 查看提交历史，以便确定回到哪个版本，带--pretty=oneline参数，只显示简单信息
 	git reflog 查看每一次提交的命令历史（包括reset）
+工作区和暂存区
+	git add实际上是将file文件（或被修改的文件）添加到暂存区
+	git commit提交更改，实际上是把暂存区的内容提交到当前的分支（比如master分支）
+管理修改
+	git跟踪管理的是每一次的修改操作，而不是文件。
+	意思是git管理了每一次add（提交的修改）
+撤销修改
+	未曾使用git add，撤销工作区的修改
+		git checkout -- <file>
+	已经使用git add ，从暂存区撤销
+		git reset HEAD <file>
+	若已经使用git add和git commit，只能使用版本回退来回到上一个版本，前提是没有提交到远程库
+删除文件
+	当你使用git add 和git commit 提交了一个文件之后，使用rm操作删除了文件
+	1.误删除，使用git checkout -- <file>从版本库中恢复文件
+	2.需要删除，git rm <file>并git commit -m "***"，版本库也删除该文件
+连接github，添加远程仓库
+	在git BASH输入
+		$ ssh-keugen -t rsa -c "youremail@example.com"
+	一路回车
+	在用户根目录下的.ssh文件夹下会生成id_rsa和id_rsa.pub
+	前者是私钥，后者是公钥
+	在github的Setting中选择SSH and GPG keys，点击New SSH key，自己命名标题（title），将id_rsa.pub输入key中，点击Add SSH Key。
+	在github新建一个repository，比如erepository
+	在git BASH下，进入你的本地工作区
+	输入git remote add origin git@server-name:path/repository-name.git
+	比如git remote add origin git@github.com:kwanwooo/gitrepository.git
+	之后输入git push -u origin master 第一次推送master分支的所有内容
+	之后就可以使用git push origin master推送最新的修改。
+从远程仓库克隆
+	使用git clone从远程仓库下载内容
+	比如git clone git@github.com:kwanwooo/tips.git
+	地址可以使用https，但git比较快不用输入口令
+分支管理：创建、合并分支，解决冲突，分支管理策略，Bug分支，Feature分支，多人协作，Rebase
+创建分支
+	创建名为dev的分支，并切换到该分支，有两种方式
+	a）	
+		$ git branch dev
+		$ git checkout dev
+	b）	
+		$ git checkout -b dev
+查看分支：git branch，当前分支会被标记一个*号
+
+创建分支：git branch <name>
+
+切换分支：git checkout <name>
+
+创建+切换分支：git checkout -b <name>
+
+合并某分支到当前分支：git merge <name>
+
+删除分支：git branch -d <name>
+
+解决冲突
+	如果分支commit的内容不一样，在merge的时候会提示错误，需要先使用git diff <file>将文件不一致地方改为一致，接着再提交。
+	git log -graph可以查看分支历史
+分支管理策略
+	合并分支时使用
+		-no-ff参数普通模式合并，例子：$ git merge --no-ff -m "******" <branch_name>
+		
+		--no-ff：不使用fast-forward方式合并，保留分支的commit历史
+		--squash：使用squash方式合并，把多次分支commit历史压缩为一次
+
+		不加参数则为fast forward看不出来有分支
+Bug 分支
+	git stash可以存储当前工作状态
+	git stash pop，回到工作现场
+多人协作
+
+首先，可以试图用git push origin <branch-name>推送自己的修改；
+如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+如果合并有冲突，则解决冲突，并在本地提交； 没有冲突或者解决掉冲突后，再用git push origin <branch-name>推送就能成功.
+如果git pull提示no tracking information，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream-to <branch-name> origin/<branch-name>。
+
+查看远程库信息，使用git remote -v； 本地新建的分支如果不推送到远程，对其他人就是不可见的；
+从本地推送分支，使用git push origin branch-name，如果推送失败，先用git pull抓取远程的新提交；
+在本地创建和远程分支对应的分支，使用git checkout -b branch-name origin/branch-name，本地和远程分支的名称最好一致；
+建立本地分支和远程分支的关联，使用git branch --set-upstream branch-name origin/branch-name； 从远程抓取分支，使用git pull，如果有冲突，要先处理冲突。
+
+标签管理
+命令git tag <tagname>用于新建一个标签，默认为HEAD，也可以指定一个commit id；
+命令git tag -a <tagname> -m "blablabla..."可以指定标签信息；
+命令git tag可以查看所有标签。
+注意：标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签。
+标签操作
+命令git push origin <tagname>可以推送一个本地标签；
+命令git push origin --tags可以推送全部未推送过的本地标签；
+命令git tag -d <tagname>可以删除一个本地标签；
+命令git push origin :refs/tags/<tagname>可以删除一个远程标签。
