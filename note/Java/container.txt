@@ -1,0 +1,50 @@
+Iterator
+	Iterable
+		Collection
+			List
+			Set
+			Queue
+	ListIterator
+		List
+Collection实现了Iterable接口，其中iterator()方法可以产生一个Iterator对象，通过这个对象来遍历Collection中的元素
+JDK1.5之后可以使用foreach遍历Iterable接口的聚合对象
+
+
+
+
+
+Collection(I)
+	List(I)
+		ArrayList
+		LinkedList
+		Vector:线程安全
+	Set(I)
+		HashSet
+		LinkedHashSet
+		SortSet(I)
+			TreeSet
+	Queue(I)
+		LinkedList
+		PriorityQueue
+Map(I)
+	HashTable:线程安全（现在使用ConcurrentHashMap效率高，因为引入了分段锁）
+	HashMap
+	LinkedHashMap
+	SortMap(I)
+		TreeMap
+		
+常用容器介绍
+ArrayList
+	特点:
+		底层以数组实现，支持随机访问，查询速度快。
+		插入删除耗费性能。
+		不支持线程安全。
+LinkedList
+	特点：
+		底层以双向链表实现，不支持随机访问，查询速度慢
+		插入、删除快。
+		不支持线程安全
+
+HashSet
+	特点：
+		存储的对象不重复
