@@ -1,0 +1,5 @@
+生产者消费者
+	两种实现方式
+	一、采用syncronized+wait+notify实现
+	二、使用ReentrantLock与Condition实现
+	二、采用BlockingQueue接口的LinkedBlockingQueue实现
