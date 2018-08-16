@@ -1,0 +1,51 @@
+磁盘操作：File
+
+字节操作：InputStream 和 OutputStream
+
+字符操作：Reader 和 Writer
+
+对象操作：Serializable
+
+网络操作：Socket
+
+新的输入/输出：NIO
+
+
+java.io.InputStream
+	abstract int read()
+	//读一个字节，并返回该字节
+	int read(byte[] b)
+	//度入一个字节数组，返回实际读入的字节数或碰到流结尾返回-1，最多读取b.length
+	int read(byte[] b, int off, int len)
+	//同上，参数off表示第一个读入字节在b中的偏移量，len代表最大读入字节数
+	long skip(long n)
+	//跳过n个字节，返回实际跳过的字节数（遇到流的结尾，返回值可能小于n）
+	int available()
+	//返回不阻塞的情况下可获取的字节数
+	void close()
+	//关闭流
+	void mark(int readlimit)
+	//在输入流的当前位置打一个标记（部分流不支持），如果输入流中已经读入多于readlimit个，则流忽略这个标记
+	void reset()
+	//返回到最后一个标记，对read的调用将重新读取这些字节。若无标记，则流不被重置。
+	boolean markSupported()
+	//若这个流支持打标记，则返回true
+java.io.abstract void write(int b)
+	abstract void write(int n)
+	//写一个字节的数据
+	void write(byte[] b)
+	//写出字节到字节数组b中
+	void write(byte[] b, int off, int len)
+	//同上，off表示在b中的偏移量，len表示字节的最大长度
+	void close()
+	//flush并关闭输出流
+	void flush()
+	//将所有缓冲的数据发送到目的地
+	
+缓冲区（buffer）
+	
+	
+	程->缓->数
+	    冲  据
+	序<-区<-源
+	

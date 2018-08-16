@@ -1,0 +1,59 @@
+命令式格式
+Imperative
+	Tell what and tell how
+声明式格式
+Declarative
+	Tell what not how
+函数式格式
+Functional
+	Declarative + Higher-Order
+高阶函数Higher-Order
+	一般Java开发中，将对象作为形参传递给方法，在方法内创建对象，并从方法中返回对象。
+	在高阶函数中对函数可以执行相同的操作，将函数传递给方法，在方法内创建函数，并从方法中返回函数。
+	可以接收、创建或返回函数的函数或方法被称为高阶函数。
+	注意：在此上下文中，方法 是类的一部分 — 静态或实例 — 但函数对于方法而言是本地函数，不能特意与类或实例关联。
+
+函数组合composition of functions, or a function composition
+	在函数编程中，使用一系列更小的模块化函数或运算来对复杂运算进行排序。
+管道集合Pipeline
+	当一个数据集合流经一个函数组合时，它就变成了一个集合管道
+	在 Java 中使用 Stream 构建函数管道
+		优点
+			简介、富于表达、优雅，代码可读性强
+			采用惰性计算，高效
+			可以并行使用
+	惰性计算：目的是最小化计算机所要做的工作
+		一般分为短路求值和延迟计算
+	纯函数Pure Function
+		一、纯函数是幂等的（调用没有次数限制）
+		二、只要给定输出，就会产生相同的结果
+		三、纯函数没有副作用，无论对它做什么，都不会更改程序中的其他任何元素
+		规则
+			不改变任何元素
+			不依赖任何可能改变的元素
+Java8中的for循环替代
+	IntStream.range(1, 4).forEach(i -> System.out.println(i + "..."));
+	替代了
+	for(int i = 1; i < 4; i++) {
+		System.out.print(i + "...");
+	}
+	优势
+	1.不需要初始化可变变量(int i = 1)
+	2.不需要指定增量(i++)
+	
+
+方法引用Method Reference
+	方法引用是用来直接访问类或者实例的已经存在的方法或者构造方法。
+	方法引用提供了一种引用而不执行方法的方式，它需要由兼容的函数式接口构成的目标类型上下文。
+	计算时，方法引用会创建函数式接口的一个实例。
+	格式：
+		referenceToInstance::methodName 
+			使用形参作为方法的参数variable -> reference.instanceMethod(variable)转化为reference::instanceMethod
+			比如variable1,variable2 -> ClassName.methodName(variable1,variable2)可以转化为ClassName::methodName
+		ClassName::methodName
+			使用形参作为目标比如variable -> variable.instanceMethod()转化为 ClassName::instanceMethod
+			比如variable1,variable2 -> variable1.methodName(variable2)可以转化为ClassName::methodName
+		
+	如果我们写的lambda表达式仅仅是为了传递一个或多个参数，那么方法引用会比较适合。
+	
+	
