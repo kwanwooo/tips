@@ -1,4 +1,4 @@
-磁盘操作：File
+﻿磁盘操作：File
 
 字节操作：InputStream 和 OutputStream
 
@@ -15,7 +15,7 @@ java.io.InputStream
 	abstract int read()
 	//读一个字节，并返回该字节
 	int read(byte[] b)
-	//度入一个字节数组，返回实际读入的字节数或碰到流结尾返回-1，最多读取b.length
+	//读入一个字节数组，返回实际读入的字节数或碰到流结尾返回-1，最多读取b.length
 	int read(byte[] b, int off, int len)
 	//同上，参数off表示第一个读入字节在b中的偏移量，len代表最大读入字节数
 	long skip(long n)
