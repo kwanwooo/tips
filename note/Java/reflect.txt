@@ -1,8 +1,183 @@
 ﻿Class类
-1）在面向对象的世界里，万事万物皆对象。除了静态变量和普通数据类型
+1)在面向对象的世界里，万事万物皆对象。除了静态变量和普通数据类型
    类是对象，类是java.lang.Class类的实例对象。这个对象称为该类的类类型。
    There is a class named Class
-2）动态加载类和静态加载类的区别
+2)获取类的方式
+基本类型使用The.class获取
+e.g.
+boolean.class
+对象使用Object.getClass()方法获取
+e.g.
+Class c = new byte[1024].getClass()
+通过类的全地址Class.forName()获取
+e.g.
+Class.forName("[D")
+Class.forName("com.kwanwoo.MyLocaleServiceProvider")
+通过包装类的.TYPE获取
+e.g.
+Void.TYPE
+通过方法获取
+e.g.
+Class.getClasses()
+Class.getDeclaredClasses()
+3)检查类修饰符和类型
+获取类Class<?> c = Class.forName()
+获取类名称c.getCanonicalName()
+获取类的访问修饰符c.getModifiers()
+获取类的泛型类型参数TypeVariable[] tv = c.getTypeParameters()
+获取类实现的接口Type[] intfs = c.getGenericInterfaces()
+获取类继承的路径Class<?> ancestor = c.getSuperclass() 再递归查询
+获取类的注解Annotation[] ann = c.getAnnotations()
+4)获取类的成员变量和成员函数
+获取包路径c.getPackage()
+获取构造方法
+1.getDeclaredConstructors()
+获得该类的所有构造方法,不包括父类
+2.getConstructors()
+获得该类的公共构造方法,包括父类
+获取字段
+1.c.getFields()
+获得该类的所有的公共（public）的字段，包括父类中的字段
+2.getDeclaredFields()
+获得该类的所有声明的字段，即包括public、private和proteced，但是不包括父类的申明字段
+获取方法
+1.c.getMethods()
+获取该类中的所有公共成员方法,以及继承的公共成员方法
+2.getDeclaredMethods()
+该方法是获取本类中的所有方法，包括私有的(private、protected、默认以及public)的方法
+获取内部类
+1.c.getClasses()获取该类及其父类所有的public的内部类
+2.getDeclaredClasses()获取该类的所有内部类
+5)
+java.lang.reflect.Member
+
+1.java.lang.reflect.Field
+获取字段类型
+检索和解析字段修饰符
+获取和设置字段值
+
+调用Field f = Class.getFields() 返回一个Field[]
+包括
+class
+superClass
+an interface implement this class
+an interface extended an interface by this class
+f.getType()
+获取字段类型
+f.getGenericType()
+获取字段泛型类型
+Field[] flds = c.getDeclaredFields();
+获得某个类的所有声明(所有的修饰符)的字段,不包括父类的
+
+Field fld = Fidld[0]
+fld.getModifiers()
+获得字段的修饰符
+
+fld.getName()
+获得字段名称
+
+fld.isSynthetic()
+判断是否为编译器生成的
+fld.isEnumConstant()
+判断是否是枚举类型
+
+Field foo = c.getDeclaredField("foo")
+返回一个 Field 对象，该对象反映此 Class 对象所表示的类或接口的指定已声明字段
+
+设置字段的值
+foo.set()
+foo.setLong()
+foo.setBoolean()
+foo.setByte()
+foo.setChar()
+foo.setDouble()
+foo.setFloat()
+foo.setInt()
+foo.setShort()
+
+注意:反射来设置字段的属性可能会失去运行时的优化
+
+
+2.java.lang.reflect.Method
+获取方法类型信息
+获取方法参数的名称
+检索和解析方法修饰符
+调用方法
+
+Method[] allMethods = c.getDeclaredMethods()
+Method m = allMethods[0]
+m.getReturnType()
+方法的正式返回类型
+
+m.getGenericReturnType()
+方法的泛型返回类型
+
+Class<?>[] pType =  m.getParamterTypes()
+方法的形式参数类型
+
+Type[] gpType =  m.getGenericParameterTypes()
+参数的泛型类型
+
+Class<?>[] xType =  m.getExceptionTypes()
+抛出的异常类型
+Type[] gxType = m.getGenericParamTypes()
+抛出的异常泛型类型
+
+m.toGenericString()
+返回一个描述此方法的字符串
+
+ Modifier.toString(m.getModifiers()));
+返回由此Method对象表示的方法的Java语言修饰符
+
+m.isSynthetic()
+是否是合成方法
+m.isVarArgs()
+是否带有可变参数
+m.isBridge()
+是否是桥接方法
+
+m.invoke(class, methodValue)
+调用Method的方法
+
+3.java.lang.reflect.Constructor
+检索带参数的构造函数
+检索和解析构造函数修饰符
+创建新类实例
+
+Constructor[] allConstructors = c.getDeclaredConstructors();
+获得所有的构造器,不包括父类
+
+Constructor ctor =  allConstructors[0]
+
+ctor.toGenericString()
+获得描述该构造器的字符串
+
+ctor.getGenericParameterTypes()
+获得构造器的泛型类型
+
+ctor.isSynthetic()
+是否是合成构造器
+ctor.isVarArgs()
+是否带有可变参数
+
+ctor.newInstance()
+创建一个对象
+
+6)数组类型
+c.getComponentType()
+数组类型获取Class对象
+
+java.lang.reflect.Array
+
+Array.newInstance()
+Array.set()
+
+Array.newArray()
+数组
+Array.multiNewArray()
+多维数组
+
+6)动态加载类和静态加载类的区别
 new 创建对象是静态加载类，在编译时刻就需要加载所有可能使用的类
 通过动态加载类可以解决该问题
 3）通过接口解决newInstance()强制类型转换需要知道类名的缺陷（只需要知道接口名字）
