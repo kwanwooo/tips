@@ -1,0 +1,68 @@
+1. 使用集合框架的优点
+
+ - 减少编程工作
+ - 提高代码的速度和质量
+ - 允许不相关的API之间的互相通信
+ - 减轻学习和使用新API的工作量
+ - 促进软件重用
+ 
+ 2. 接口
+  - Collection
+  
+   - 默认方法
+    int size()
+    boolean isEmpty()
+    boolean contains(Object element)
+    boolean add(E element)
+    boolean remove(Object element)
+    Iterator<E> iterator
+   - 遍历Collection的方式
+    聚合操作(stream(), foreach, iterators)
+   - 批量操作
+    containsAll()
+    addAll()
+    removeAll()
+    retainAll()
+    clear()
+   - 数组交互
+    Collection c;
+    Object[] list = c.toArray()
+  
+  - Set
+  - List
+   - 列表算法
+    sort()
+    shuffle()
+    reverse()
+    rotate()
+    e.g.
+    list[a, b, c, d]
+    Collections.rotate(list, 1)
+    list[d, a, b, c]
+    
+    swap()
+    replaceAll()
+    
+    fill()
+    e.g.
+    list[0, 1, 2, 3, 4, 5]
+    Arrays.fill(list, 3, 5, -1)
+    list[0, 1, 2, -1, -1, 5]
+    
+    copy()
+    binarySearch() 二分查找
+    indexOfSubList()
+    lastIndexOfSubList()
+  - Queue
+   - 接口
+    E element()
+    boolean offer(E e)
+    E peek()
+    E poll()
+    E remove()
+    
+  - Deque
+  - Map
+  - SortedSet
+  - SortedMap
+  
