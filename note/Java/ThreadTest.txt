@@ -1,3 +1,19 @@
+Thread Objects
+ - Defining and Starting a Thread
+  - Defining
+   1. implements Runnable
+   2. extends Thread
+  - Starting
+   Thread.start()
+ - Pausing Execution with Sleep
+  - Thread.sleep() throws InterruptedException
+ - Interrupts (中断)
+  - Thread.interrupted() 判断是否被中断
+ - Joins (联接)
+  - Thread.join() 当前线程暂停, 等待Thread线程执行完成继续执行
+
+Synchronization
+
 生产者消费者
 	两种实现方式
 	一、采用syncronized+wait+notify实现
