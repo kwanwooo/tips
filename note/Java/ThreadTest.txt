@@ -13,7 +13,25 @@ Thread Objects
   - Thread.join() 当前线程暂停, 等待Thread线程执行完成继续执行
 
 Synchronization
+ - synchronizated 关键字
+ 1.synchronized(this) 对象锁
+ 2.public synchronized void method() {} 对象锁
+ 3.void synMethod(Object a){ synchronized(a){} } 私有锁
+ 4.synchronized(ClassName.class) 类锁
+ 5. static synchronized void method() {} 类锁
 
+锁类型
+ - 可重入锁：在执行对象中所有同步方法不用再次获得锁
+ - 可中断锁：在等待获取锁过程中可中断
+ - 公平锁： 按等待获取锁的线程的等待时间进行获取，等待时间长的具有优先获取锁权利
+ - 读写锁：对资源读取和写入的时候拆分为2部分处理，读的时候可以多线程一起读，写的时候必须同步地写
+
+Lock
+ - Lock.tryLock() 立即返回, 锁定失败返回false, 锁定成功返回true
+ - Lock.tryLock(long time, TimeUnit unit) 同上, 锁定失败等待time时间
+ - Lock.lock() 锁定,若成功,计数加一; 若失败,则一直等待
+ - Lock.unlock() 释放锁,计数减一
+ - 
 生产者消费者
 	两种实现方式
 	一、采用syncronized+wait+notify实现
