@@ -1,10 +1,10 @@
-# Junit 是什么？
+# JUnit 是什么？
 
-1. JUnit是一个Java语言的单元测试框架。它由Kent Beck和Erich Gamma建立，逐渐成为源于Kent Beck的sUnit的xUnit家族中最为成功的一个。
+1. JUnit 是一个Java语言的单元测试框架。它由Kent Beck和Erich Gamma建立，逐渐成为源于Kent Beck的sUnit的xUnit家族中最为成功的一个。
 
-2. Junit 测试是程序员测试，即所谓的白盒测试，它需要程序员知道被测试的代码如何完成功能，以及完成什么样的功能。
+2. JUnit 测试是程序员测试，即所谓的白盒测试，它需要程序员知道被测试的代码如何完成功能，以及完成什么样的功能。
 
-3. Junit是一套框架，继承TestCase类，就可以用Junit进行自动测试。
+3. JUnit是一套框架，继承TestCase类，就可以用Junit进行自动测试。
 
 4. 断言机制：将程序预期的结果与程序运行的最终结果进行比对，确保对结果的可预知性。
 
@@ -16,12 +16,12 @@
 
 8. JUnit5：JDK 8及以上可以使用。
 
-# Junit 能做什么？
+# JUnit 能做什么？
 
 1. 通常我们写完代码想要测试一段代码的正确性，那么必须创建一个 main() 方法，然后编写测试代码。测试的代码越多，main() 方法越多，或者将其全部写在一个 main() 方法里面。这也会大大的增加测试的复杂度，降低程序员的测试积极性。
-2. Junit 能很好的解决这个问题，简化单元测试，写一点测一点，在编写以后的代码中如果发现问题可以较快的追踪到问题的原因，减小回归错误的纠错难度。
+2. JUnit 能很好的解决这个问题，简化单元测试，写一点测一点，在编写以后的代码中如果发现问题可以较快的追踪到问题的原因，减小回归错误的纠错难度。
 
-# Junit 的用法
+# JUnit 的用法
 
 1. 测试方法上必须使用@Test进行修饰
 2. 测试方法必须使用public void 进行修饰，不能带任何的参数
@@ -31,16 +31,16 @@
 6. 测试类使用Test作为类名后缀（不是必须）
 7. 测试方法用test作为方法的前缀（不是必须）
 
-# spring下使用junit，需要读取spring的配置文件
+# spring下使用JUnit，需要读取spring的配置文件
 
 1. @RunWith(SpringJUnit4ClassRunner.class)//表示继承了SpringJunit4ClassRunner类
 2. @ContextConfiguration("classpath:applictionContext.xml")//告诉junit spring配置文件
 
 # JUnit 4 特点
 
-1. 使用junit4.x版本进行单元测试时，不用测试类继承TestCase父类，因为，junit4.x全面引入了Annotation来执行我们编写的测试。
-2. junit4.x版本，引用了注解的方式，进行单元测试；
-3. junit4.x版本我们常用的注解：
+1. 使用JUnit4.x版本进行单元测试时，不用测试类继承TestCase父类，因为，JUnit4.x全面引入了Annotation来执行我们编写的测试。
+2. JUnit4.x版本，引用了注解的方式，进行单元测试；
+3. JUnit4.x版本我们常用的注解：
     - @Before 注解：与junit3.x中的setUp()方法功能一样，在每个测试方法之前执行。
     - @After 注解：与junit3.x中的tearDown()方法功能一样，在每个测试方法之后执行。
     - @BeforeClass 注解：在所有方法执行之前执行。方法是静态的，只运行一次，所以比较适合加载配置文件。
@@ -48,7 +48,7 @@
     - @Test(timeout = xxx) 注解：设置当前测试方法在一定时间内运行完，否则返回错误；
     - @Test(expected = Exception.class) 注解：设置被测试的方法是否有异常抛出。抛出异常类型为：Exception.class；
     - @Ignore 注解：注释掉一个测试方法或一个类，被注释的方法或类，不会被执行。
-4. junit5.x版本我们常用的注解：略
+4. JUnit5.x版本我们常用的注解：略
 
 # 测试失败
 
