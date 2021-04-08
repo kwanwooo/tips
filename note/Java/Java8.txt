@@ -1,3 +1,4 @@
+1.新增流式操作 stream、lambda表达式等
 命令式格式
 Imperative
 	Tell what and tell how
@@ -55,5 +56,6 @@ Java8中的for循环替代
 			比如variable1,variable2 -> variable1.methodName(variable2)可以转化为ClassName::methodName
 		
 	如果我们写的lambda表达式仅仅是为了传递一个或多个参数，那么方法引用会比较适合。
-
-	
+2.为新增流式操作而增加的接口默认方法
+3.HashMap扩容后转化为红黑树
+5.Path
