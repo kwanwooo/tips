@@ -1,23 +1,23 @@
 spring:
   profiles:
     active: dev
-    application:
-      name: spring-cloud-config-dev
+  application:
+    name: spring-cloud-config-dev
 
 --
 
 spring:
   profiles:
     active: test
-    application:
-      name: spring-cloud-config-test
+  application:
+    name: spring-cloud-config-test
 
 --
 
 spring:
   profiles:
     active: proc
-    application:
-      name: spring-cloud-config-proc
+  application:
+    name: spring-cloud-config-proc
 
 
